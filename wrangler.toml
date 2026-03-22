@@ -20,9 +20,9 @@ workers_dev = true
 binding = "R2_IMAGES"
 bucket_name = "resonant-mind-images"
 
-# Static assets for dashboard
-[assets]
-directory = "./dashboard"
+# Static assets for dashboard (uncomment when dashboard is ready)
+# [assets]
+# directory = "./dashboard"
 
 # Cron triggers for subconscious daemon processing
 [triggers]

@@ -416,22 +416,6 @@ export async function routeRequest(
     });
   }
 
-  if (url.pathname === "/dashboard" || url.pathname === "/dashboard/") {
-    return withSecurityHeaders(
-      Response.redirect(new URL("/", request.url).toString(), 302),
-      request,
-      env
-    );
-  }
-
-  if (url.pathname === "/v2" || url.pathname === "/v2/") {
-    return withSecurityHeaders(
-      Response.redirect(new URL("/v2.html", request.url).toString(), 302),
-      request,
-      env
-    );
-  }
-
   if (url.pathname.startsWith("/api/")) {
     if (request.method === "OPTIONS") {
       return createApiPreflightResponse(request, env);

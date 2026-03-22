@@ -57,8 +57,8 @@ Resonant Mind is a Model Context Protocol (MCP) server that provides 27 tools fo
 ┌─────────────────────────────────────────────┐
 │              Cloudflare Worker              │
 │                                            │
-│  MCP Protocol ←→ 22 Tool Handlers          │
-│  REST API     ←→ Dashboard Endpoints       │
+│  MCP Protocol ←→ 27 Tool Handlers          │
+│  REST API     ←→ Data Endpoints            │
 │  Cron Trigger ←→ Subconscious Daemon       │
 │                                            │
 ├─────────────────────────────────────────────┤
@@ -161,7 +161,7 @@ https://your-worker.workers.dev/mcp/YOUR_CONNECTOR_SECRET
 | `SIGNING_SECRET` | No | Separate HMAC key for signed image URLs (defaults to MIND_API_KEY) |
 | `MCP_CONNECTOR_SECRET` | No | Secret path segment for MCP connector auth |
 | `WEATHER_API_KEY` | No | WeatherAPI.com key for inner weather context |
-| `DASHBOARD_ALLOWED_ORIGIN` | No | CORS origin for the dashboard |
+| `DASHBOARD_ALLOWED_ORIGIN` | No | CORS origin for API access |
 | `WORKER_URL` | No | Public URL of this worker (for signed image URLs) |
 | `R2_PATH_PREFIX` | No | R2 key prefix (default: `resonant-mind-images`) |
 | `LOCATION_NAME` | No | Location name for weather/time context |
@@ -184,7 +184,7 @@ https://your-worker.workers.dev/mcp/YOUR_CONNECTOR_SECRET
 | `mind_feel_toward` | Track relational state toward people |
 | `mind_identity` | Read/write identity graph sections |
 | `mind_context` | Situational awareness (read/set/update/clear) |
-| `mind_health` | Cognitive health dashboard with scores |
+| `mind_health` | Cognitive health report with scores |
 | `mind_surface` | Surface memories (resonant or spark mode) |
 | `mind_sit` | Sit with an observation, add processing notes |
 | `mind_resolve` | Mark an observation as metabolized |
@@ -211,10 +211,6 @@ For production deployments, you can use Postgres via Cloudflare Hyperdrive inste
 4. Add the Hyperdrive binding to `wrangler.toml`
 
 The adapter automatically transforms SQLite syntax to Postgres (`?` → `$1`, `datetime('now')` → `NOW()`, etc.).
-
-## Dashboard
-
-A built-in web dashboard is served from the `/dashboard` directory. It provides visual access to entities, observations, journals, health scores, and the subconscious state.
 
 ## Origins
 
