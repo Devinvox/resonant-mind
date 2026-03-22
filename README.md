@@ -186,26 +186,13 @@ CREATE EXTENSION IF NOT EXISTS vector;
 
 **Step 3: Create the schema**
 
-Run the migration SQL against your Neon database. You'll need to adapt the D1 migration slightly for Postgres:
+In the Neon SQL Editor, paste and run the contents of [`migrations/postgres.sql`](migrations/postgres.sql). This creates all tables, indexes, and the vector embedding table with pgvector.
 
-- Replace `INTEGER PRIMARY KEY AUTOINCREMENT` with `SERIAL PRIMARY KEY`
-- Replace `TEXT DEFAULT (datetime('now'))` with `TIMESTAMPTZ DEFAULT NOW()`
-- Add the embeddings table:
+You can also run it from the command line using `psql`:
 
-```sql
-CREATE TABLE embeddings (
-    id TEXT PRIMARY KEY,
-    source_type TEXT NOT NULL,
-    source_id INTEGER NOT NULL,
-    embedding vector(768),
-    content TEXT,
-    metadata JSONB DEFAULT '{}'
-);
-
-CREATE INDEX ON embeddings USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+```bash
+psql "postgresql://user:password@ep-something.us-east-2.aws.neon.tech/neondb?sslmode=require" -f migrations/postgres.sql
 ```
-
-A full Postgres migration script is available in `migrations/`.
 
 **Step 4: Create a Hyperdrive config**
 
