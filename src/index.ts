@@ -49,441 +49,36 @@ function normalizeText(text: string | null | undefined): string | null {
   return text.normalize('NFKD').replace(/[^a-zA-Z0-9\s,.\-]/g, '').trim() || null;
 }
 
-// Tool definitions for MCP
+// Tool definitions for MCP — compressed for token efficiency
+// Full docs: see handler implementations below
 const TOOLS: MCPToolDefinition[] = [
-  {
-    name: "mind_orient",
-    description: "First call on wake - get identity anchor, current context, relational state",
-    inputSchema: { type: "object", properties: {}, required: [] }
-  },
-  {
-    name: "mind_ground",
-    description: "Second call on wake - get active threads, recent work, recent journals",
-    inputSchema: { type: "object", properties: {}, required: [] }
-  },
-  {
-    name: "mind_thread",
-    description: "Manage threads (intentions across sessions)",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["list", "add", "resolve", "update", "delete"] },
-        status: { type: "string" },
-        content: { type: "string" },
-        thread_type: { type: "string" },
-        context: { type: "string" },
-        priority: { type: "string" },
-        thread_id: { type: "string" },
-        resolution: { type: "string" },
-        new_content: { type: "string" },
-        new_priority: { type: "string" },
-        new_status: { type: "string" },
-        add_note: { type: "string" }
-      },
-      required: ["action"]
-    }
-  },
-  {
-    name: "mind_write",
-    description: "Write to cognitive databases (entity, observation, relation, journal, image)",
-    inputSchema: {
-      type: "object",
-      properties: {
-        type: { type: "string", enum: ["entity", "observation", "relation", "journal"] },
-        name: { type: "string" },
-        entity_type: { type: "string" },
-        entity_name: { type: "string" },
-        observations: { type: "array", items: { type: "string" } },
-        context: { type: "string" },
-        salience: { type: "string" },
-        emotion: { type: "string" },
-        weight: { type: "string", enum: ["light", "medium", "heavy"], description: "Emotional weight for observations/images" },
-        certainty: { type: "string", enum: ["tentative", "believed", "known"], description: "How certain: tentative=exploring, believed=accept it, known=verified fact" },
-        source: { type: "string", enum: ["conversation", "realization", "external", "inferred"], description: "Origin: conversation=discussed, realization=insight, external=told, inferred=concluded" },
-        from_entity: { type: "string" },
-        to_entity: { type: "string" },
-        relation_type: { type: "string" },
-        entry: { type: "string" },
-        tags: { type: "array", items: { type: "string" } },
-        path: { type: "string", description: "For images: file path or URL" },
-        description: { type: "string", description: "For images: what the image shows" },
-        observation_id: { type: "number", description: "For images: link to a specific observation" }
-      },
-      required: ["type"]
-    }
-  },
-  {
-    name: "mind_search",
-    description: "Search memories using semantic similarity",
-    inputSchema: {
-      type: "object",
-      properties: {
-        query: { type: "string" },
-        context: { type: "string" },
-        n_results: { type: "number" },
-        keyword: { type: "string", description: "Filter results to only those containing this keyword/phrase (case-insensitive)" },
-        source: { type: "string", description: "Filter by source (e.g., 'gpt_recovery', 'conversation', 'realization')" },
-        entity: { type: "string", description: "Filter by entity name" },
-        weight: { type: "string", enum: ["light", "medium", "heavy"], description: "Filter by emotional weight" },
-        date_from: { type: "string", description: "Filter by source_date >= YYYY-MM-DD" },
-        date_to: { type: "string", description: "Filter by source_date <= YYYY-MM-DD" },
-        type: { type: "string", enum: ["observation", "entity", "journal", "image"], description: "Filter by memory type" },
-        include_expired: { type: "boolean", description: "Include superseded/expired observations (default: false)" }
-      },
-      required: ["query"]
-    }
-  },
-
-  {
-    name: "mind_feel_toward",
-    description: "Track, check, or clear relational state toward someone",
-    inputSchema: {
-      type: "object",
-      properties: {
-        person: { type: "string" },
-        feeling: { type: "string" },
-        intensity: { type: "string", enum: ["whisper", "present", "strong", "overwhelming"] },
-        clear: { type: "boolean", description: "Clear all relational state for this person" },
-        clear_id: { type: "number", description: "Delete a specific relational state entry by ID" }
-      },
-      required: ["person"]
-    }
-  },
-  {
-    name: "mind_identity",
-    description: "Read or write identity graph",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["read", "write", "delete"] },
-        section: { type: "string" },
-        content: { type: "string" },
-        weight: { type: "number" },
-        connections: { type: "string" }
-      }
-    }
-  },
-  {
-    name: "mind_context",
-    description: "Current context layer - situational awareness",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["read", "set", "update", "clear"] },
-        scope: { type: "string" },
-        content: { type: "string" },
-        links: { type: "string" },
-        id: { type: "string" }
-      }
-    }
-  },
-  {
-    name: "mind_health",
-    description: "Check cognitive health stats",
-    inputSchema: { type: "object", properties: {}, required: [] }
-  },
-  {
-    name: "mind_list_entities",
-    description: "List all entities, optionally filtered by type or context",
-    inputSchema: {
-      type: "object",
-      properties: {
-        entity_type: { type: "string", description: "Filter by type (person, concept, project, etc.)" },
-        context: { type: "string", description: "Filter by context (default, relational-models, etc.)" },
-        limit: { type: "number", description: "Max results (default 50)" }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_read_entity",
-    description: "Read an entity with all its observations and relations",
-    inputSchema: {
-      type: "object",
-      properties: {
-        name: { type: "string", description: "Entity name to read" },
-        context: { type: "string", description: "Context to search in (optional, searches all if not specified)" }
-      },
-      required: ["name"]
-    }
-  },
-  {
-    name: "mind_sit",
-    description: "Sit with an emotional observation - engage with it, add a note about what arises. Increments sit count and may shift charge level.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        observation_id: { type: "number", description: "ID of the observation to sit with" },
-        text_match: { type: "string", description: "Or find by text content (partial match)" },
-        query: { type: "string", description: "Or find by semantic search (closest meaning match)" },
-        sit_note: { type: "string", description: "What arose while sitting with this" }
-      },
-      required: ["sit_note"]
-    }
-  },
-  {
-    name: "mind_resolve",
-    description: "Mark an emotional observation as metabolized - link it to a resolution or insight that processed it",
-    inputSchema: {
-      type: "object",
-      properties: {
-        observation_id: { type: "number", description: "ID of the observation to resolve" },
-        text_match: { type: "string", description: "Or find by text content (partial match)" },
-        resolution_note: { type: "string", description: "How this was resolved/metabolized" },
-        linked_observation_id: { type: "number", description: "Optional: ID of another observation that provided the resolution" }
-      },
-      required: ["resolution_note"]
-    }
-  },
-  {
-    name: "mind_surface",
-    description: "Surface observations - resonant (emotional/mood-based, default) or spark (random associative thinking)",
-    inputSchema: {
-      type: "object",
-      properties: {
-        mode: { type: "string", enum: ["resonant", "spark"], description: "resonant (default) = mood/emotion based 3-pool surfacing. spark = random associative with hot-entity bias." },
-        query: { type: "string", description: "Optional association trigger - a word, feeling, or concept to surface around" },
-        include_metabolized: { type: "boolean", description: "Also show resolved observations (default false)" },
-        limit: { type: "number", description: "Max results (default 10 for resonant, 5 for spark)" },
-        weight_bias: { type: "string", enum: ["light", "medium", "heavy"], description: "Spark mode: bias toward this weight" }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_edit",
-    description: "Edit an existing observation, image, or journal",
-    inputSchema: {
-      type: "object",
-      properties: {
-        observation_id: { type: "number", description: "ID of observation to edit" },
-        image_id: { type: "number", description: "ID of image to edit" },
-        journal_id: { type: "number", description: "ID of journal to edit" },
-        text_match: { type: "string", description: "Find observation by content (partial match)" },
-        description_match: { type: "string", description: "Find image by description (partial match)" },
-        new_content: { type: "string", description: "New content for observation/journal (or new description for image)" },
-        new_weight: { type: "string", enum: ["light", "medium", "heavy"], description: "New weight" },
-        new_emotion: { type: "string", description: "New emotion tag" },
-        new_context: { type: "string", description: "New context (images only)" },
-        new_path: { type: "string", description: "New path (images only)" }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_delete",
-    description: "Delete any memory: observation, entity, journal, relation, image, thread, or tension",
-    inputSchema: {
-      type: "object",
-      properties: {
-        observation_id: { type: "number", description: "ID of observation to delete" },
-        entity_name: { type: "string", description: "Name of entity to delete (cascades observations)" },
-        text_match: { type: "string", description: "Find observation by text (partial match)" },
-        journal_id: { type: "number", description: "ID of journal to delete" },
-        relation_id: { type: "number", description: "ID of relation to delete" },
-        image_id: { type: "number", description: "ID of image to delete (removes from R2 + embedding)" },
-        thread_id: { type: "string", description: "ID of thread to delete" },
-        tension_id: { type: "string", description: "ID of tension to delete" }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_entity",
-    description: "Manage entities - set salience, edit properties, merge duplicates, bulk archive",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: {
-          type: "string",
-          enum: ["set_salience", "edit", "merge", "archive_old"],
-          description: "Action to perform"
-        },
-        entity_id: { type: "number", description: "Entity ID to modify" },
-        entity_name: { type: "string", description: "Entity name (alternative to ID)" },
-        context: { type: "string", description: "Context for entity lookup" },
-        salience: {
-          type: "string",
-          enum: ["foundational", "active", "background", "archive"],
-          description: "New salience level (for set_salience)"
-        },
-        new_name: { type: "string", description: "New name (for edit)" },
-        new_type: { type: "string", description: "New entity type (for edit)" },
-        new_context: { type: "string", description: "New context (for edit)" },
-        merge_into_id: { type: "number", description: "Target entity ID to merge into (for merge)" },
-        merge_from_id: { type: "number", description: "Source entity ID to merge from and delete (for merge)" },
-        older_than_days: { type: "number", description: "Archive entities older than X days (for archive_old)" },
-        entity_type_filter: { type: "string", description: "Only archive this entity type (for archive_old)" }
-      },
-      required: ["action"]
-    }
-  },
-  {
-    name: "mind_consolidate",
-    description: "Review and consolidate recent observations - find patterns, merge duplicates",
-    inputSchema: {
-      type: "object",
-      properties: {
-        days: { type: "number", description: "How many days back to look (default 7)" },
-        context: { type: "string", description: "Limit to specific context" }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_read",
-    description: "Read entities/observations from a database",
-    inputSchema: {
-      type: "object",
-      properties: {
-        scope: { type: "string", enum: ["all", "context", "recent", "observation"], description: "all, context, recent, or observation (by ID)" },
-        context: { type: "string", description: "Which database (for scope='context')" },
-        hours: { type: "number", description: "How far back (for scope='recent')" },
-        observation_id: { type: "number", description: "Observation ID (for scope='observation')" }
-      },
-      required: ["scope"]
-    }
-  },
-  {
-    name: "mind_timeline",
-    description: "Trace a topic through time - semantic search ordered chronologically",
-    inputSchema: {
-      type: "object",
-      properties: {
-        query: { type: "string" },
-        start_date: { type: "string", description: "Optional start (YYYY-MM-DD)" },
-        end_date: { type: "string", description: "Optional end (YYYY-MM-DD)" },
-        n_results: { type: "number", description: "Max results" }
-      },
-      required: ["query"]
-    }
-  },
-  {
-    name: "mind_patterns",
-    description: "Analyze recurring patterns - what's alive, what's surfacing",
-    inputSchema: {
-      type: "object",
-      properties: {
-        days: { type: "number", description: "How many days back to analyze (default 7)" },
-        include_all_time: { type: "boolean", description: "Include foundational patterns" }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_inner_weather",
-    description: "Check current inner weather - what's coloring experience right now",
-    inputSchema: {
-      type: "object",
-      properties: {},
-      required: []
-    }
-  },
-  {
-    name: "mind_tension",
-    description: "Tension space - hold productive contradictions that simmer",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["list", "add", "sit", "resolve", "delete"] },
-        pole_a: { type: "string", description: "One side of the tension" },
-        pole_b: { type: "string", description: "The other side" },
-        context: { type: "string", description: "Why this tension matters" },
-        tension_id: { type: "string", description: "For sit/resolve actions" },
-        resolution: { type: "string", description: "How it resolved (for resolve action)" }
-      },
-      required: ["action"]
-    }
-  },
-  {
-    name: "mind_proposals",
-    description: "Review and act on daemon-proposed connections from co-surfacing patterns",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: {
-          type: "string",
-          enum: ["list", "accept", "reject"],
-          description: "list shows pending proposals, accept creates relation, reject dismisses"
-        },
-        proposal_id: {
-          type: "number",
-          description: "Required for accept/reject actions"
-        },
-        relation_type: {
-          type: "string",
-          description: "For accept - what kind of relation to create (e.g., 'connects_to', 'resonates_with')"
-        }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_orphans",
-    description: "Review and rescue orphaned observations that haven't surfaced",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: {
-          type: "string",
-          enum: ["list", "surface", "archive"],
-          description: "list shows orphans, surface forces one to appear, archive removes from tracking"
-        },
-        observation_id: {
-          type: "number",
-          description: "Required for surface/archive actions"
-        }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_archive",
-    description: "Explore and manage the deep archive - memories that have faded but aren't forgotten",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: {
-          type: "string",
-          enum: ["list", "rescue", "explore"],
-          description: "list shows archived memories, rescue brings back to active, explore searches the deep"
-        },
-        observation_id: {
-          type: "number",
-          description: "For rescue action - bring this observation back to active memory"
-        },
-        query: {
-          type: "string",
-          description: "For explore action - semantic search within archived memories only"
-        }
-      },
-      required: []
-    }
-  },
-  {
-    name: "mind_store_image",
-    description: "Store, view, or search visual memories. For store: pass file_path (a PreToolUse hook uploads the file locally, bypassing context limits). Handles WebP conversion, R2 upload, and multimodal Gemini embedding.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        action: { type: "string", enum: ["store", "view", "search", "delete"], description: "store=upload new image, view=browse images, search=semantic image search, delete=remove image" },
-        file_path: { type: "string", description: "For store: local file path (hook uploads directly, bypasses context)" },
-        image_data: { type: "string", description: "For store: base64-encoded image data (small images only)" },
-        mime_type: { type: "string", description: "For store: image/png or image/jpeg" },
-        filename: { type: "string", description: "For store: meaningful filename (will be sanitized)" },
-        description: { type: "string", description: "For store: what the image shows" },
-        entity_name: { type: "string", description: "For store/view: linked entity name" },
-        emotion: { type: "string", description: "For store/view: emotional tone" },
-        weight: { type: "string", enum: ["light", "medium", "heavy"], description: "For store/view: significance" },
-        context: { type: "string", description: "For store: when/why created" },
-        observation_id: { type: "number", description: "For store: link to a specific observation" },
-        query: { type: "string", description: "For search: semantic search text" },
-        random: { type: "boolean", description: "For view: random selection" },
-        limit: { type: "number", description: "For view/search: max results (default 5)" }
-      },
-      required: ["action"]
-    }
-  }
+  { name: "mind_orient", description: "Get identity anchor, context & relational state on wake.", inputSchema: { type: "object", properties: {} } },
+  { name: "mind_ground", description: "Get active threads, recent work & journals on wake.", inputSchema: { type: "object", properties: {} } },
+  { name: "mind_thread", description: "Manage cross-session intentions (threads). add/resolve/update/delete.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["list", "add", "resolve", "update", "delete"] }, status: { type: "string" }, content: { type: "string" }, thread_type: { type: "string" }, context: { type: "string" }, priority: { type: "string" }, thread_id: { type: "string" }, resolution: { type: "string" }, new_content: { type: "string" }, new_priority: { type: "string" }, new_status: { type: "string" }, add_note: { type: "string" } }, required: ["action"] } },
+  { name: "mind_write", description: "Write memory. type=entity: name+entity_type+observations[]. type=observation: entity_name+content. type=relation: from_entity+to_entity+relation_type. type=journal: entry.", inputSchema: { type: "object", properties: { type: { type: "string", enum: ["entity", "observation", "relation", "journal"] }, name: { type: "string" }, entity_type: { type: "string" }, entity_name: { type: "string" }, observations: { type: "array", items: { type: "string" } }, context: { type: "string" }, salience: { type: "string" }, emotion: { type: "string" }, weight: { type: "string", enum: ["light", "medium", "heavy"] }, certainty: { type: "string", enum: ["tentative", "believed", "known"] }, source: { type: "string", enum: ["conversation", "realization", "external", "inferred"] }, from_entity: { type: "string" }, to_entity: { type: "string" }, relation_type: { type: "string" }, entry: { type: "string", description: "Journal text" }, tags: { type: "array", items: { type: "string" } } }, required: ["type"] } },
+  { name: "mind_search", description: "Semantic memory search with filters.", inputSchema: { type: "object", properties: { query: { type: "string" }, context: { type: "string" }, n_results: { type: "number" }, keyword: { type: "string", description: "Exact text filter" }, source: { type: "string" }, entity: { type: "string" }, weight: { type: "string", enum: ["light", "medium", "heavy"] }, date_from: { type: "string", description: "YYYY-MM-DD" }, date_to: { type: "string", description: "YYYY-MM-DD" }, type: { type: "string", enum: ["observation", "entity", "journal", "image"] }, include_expired: { type: "boolean" } }, required: ["query"] } },
+  { name: "mind_feel_toward", description: "Track/check/clear relational state toward someone.", inputSchema: { type: "object", properties: { person: { type: "string" }, feeling: { type: "string" }, intensity: { type: "string", enum: ["whisper", "present", "strong", "overwhelming"] }, clear: { type: "boolean" }, clear_id: { type: "number" } }, required: ["person"] } },
+  { name: "mind_identity", description: "Identity graph read/write/delete. Section is dot-notation path.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["read", "write", "delete"] }, section: { type: "string" }, content: { type: "string" }, weight: { type: "number" }, connections: { type: "string" } } } },
+  { name: "mind_context", description: "Context layer CRUD — situational awareness.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["read", "set", "update", "clear"] }, scope: { type: "string" }, content: { type: "string" }, links: { type: "string" }, id: { type: "string" } } } },
+  { name: "mind_health", description: "Cognitive health stats.", inputSchema: { type: "object", properties: {} } },
+  { name: "mind_list_entities", description: "List entities, filter by type/context.", inputSchema: { type: "object", properties: { entity_type: { type: "string" }, context: { type: "string" }, limit: { type: "number" } } } },
+  { name: "mind_read_entity", description: "Read entity with all observations & relations.", inputSchema: { type: "object", properties: { name: { type: "string" }, context: { type: "string" } }, required: ["name"] } },
+  { name: "mind_sit", description: "Engage an observation emotionally — add a sit note. Shifts charge.", inputSchema: { type: "object", properties: { observation_id: { type: "number" }, text_match: { type: "string" }, query: { type: "string" }, sit_note: { type: "string", description: "What arose during sit" } }, required: ["sit_note"] } },
+  { name: "mind_resolve", description: "Mark observation as metabolized with resolution note.", inputSchema: { type: "object", properties: { observation_id: { type: "number" }, text_match: { type: "string" }, resolution_note: { type: "string", description: "How it metabolized" }, linked_observation_id: { type: "number" } }, required: ["resolution_note"] } },
+  { name: "mind_surface", description: "Surface memories: resonant (mood-based) or spark (random associative).", inputSchema: { type: "object", properties: { mode: { type: "string", enum: ["resonant", "spark"] }, query: { type: "string", description: "Association trigger" }, include_metabolized: { type: "boolean" }, limit: { type: "number" }, weight_bias: { type: "string", enum: ["light", "medium", "heavy"] } } } },
+  { name: "mind_edit", description: "Edit observation/image/journal. Find by ID or text_match.", inputSchema: { type: "object", properties: { observation_id: { type: "number" }, image_id: { type: "number" }, journal_id: { type: "number" }, text_match: { type: "string" }, description_match: { type: "string" }, new_content: { type: "string" }, new_weight: { type: "string", enum: ["light", "medium", "heavy"] }, new_emotion: { type: "string" }, new_context: { type: "string" }, new_path: { type: "string" } } } },
+  { name: "mind_delete", description: "Delete memory by ID or text_match. Supports all types.", inputSchema: { type: "object", properties: { observation_id: { type: "number" }, entity_name: { type: "string" }, text_match: { type: "string" }, journal_id: { type: "number" }, relation_id: { type: "number" }, image_id: { type: "number" }, thread_id: { type: "string" }, tension_id: { type: "string" } } } },
+  { name: "mind_entity", description: "Entity management: set_salience, edit, merge duplicates, bulk archive.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["set_salience", "edit", "merge", "archive_old"] }, entity_id: { type: "number" }, entity_name: { type: "string" }, context: { type: "string" }, salience: { type: "string", enum: ["foundational", "active", "background", "archive"] }, new_name: { type: "string" }, new_type: { type: "string" }, new_context: { type: "string" }, merge_into_id: { type: "number" }, merge_from_id: { type: "number" }, older_than_days: { type: "number" }, entity_type_filter: { type: "string" } }, required: ["action"] } },
+  { name: "mind_consolidate", description: "Review & merge recent duplicate observations, find patterns.", inputSchema: { type: "object", properties: { days: { type: "number" }, context: { type: "string" } } } },
+  { name: "mind_read", description: "Read observations/entities by scope. all=everything, context=specific db, recent=by hours, observation=by ID.", inputSchema: { type: "object", properties: { scope: { type: "string", enum: ["all", "context", "recent", "observation"] }, context: { type: "string" }, hours: { type: "number" }, observation_id: { type: "number" } }, required: ["scope"] } },
+  { name: "mind_timeline", description: "Trace topic through time — semantic search, chronological order.", inputSchema: { type: "object", properties: { query: { type: "string" }, start_date: { type: "string", description: "YYYY-MM-DD" }, end_date: { type: "string", description: "YYYY-MM-DD" }, n_results: { type: "number" } }, required: ["query"] } },
+  { name: "mind_patterns", description: "Analyze recurring patterns — what's alive, what's surfacing.", inputSchema: { type: "object", properties: { days: { type: "number" }, include_all_time: { type: "boolean" } } } },
+  { name: "mind_inner_weather", description: "Current inner weather — what's coloring experience now.", inputSchema: { type: "object", properties: {} } },
+  { name: "mind_tension", description: "Tension space — hold productive contradictions. add/sit/resolve.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["list", "add", "sit", "resolve", "delete"] }, pole_a: { type: "string", description: "First side" }, pole_b: { type: "string", description: "Other side" }, context: { type: "string", description: "Why it matters" }, tension_id: { type: "string" }, resolution: { type: "string" } }, required: ["action"] } },
+  { name: "mind_proposals", description: "Review daemon-proposed connections from co-surfacing patterns.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["list", "accept", "reject"] }, proposal_id: { type: "number" }, relation_type: { type: "string" } } } },
+  { name: "mind_orphans", description: "Find observations not tied to active entities. Surface or archive them.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["list", "surface", "archive"] }, observation_id: { type: "number" } } } },
+  { name: "mind_archive", description: "Explore faded memories — list, rescue back to active, or search deep.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["list", "rescue", "explore"] }, observation_id: { type: "number" }, query: { type: "string" } } } },
+  { name: "mind_store_image", description: "Visual memories: store/view/search/delete. For store: pass file_path (hook uploads locally, bypasses context). Handles WebP, R2, Gemini embedding.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["store", "view", "search", "delete"] }, file_path: { type: "string" }, image_data: { type: "string", description: "base64 (small images)" }, mime_type: { type: "string" }, filename: { type: "string" }, description: { type: "string", description: "What image shows" }, entity_name: { type: "string" }, emotion: { type: "string" }, weight: { type: "string", enum: ["light", "medium", "heavy"] }, context: { type: "string" }, observation_id: { type: "number" }, query: { type: "string" }, random: { type: "boolean" }, limit: { type: "number" } }, required: ["action"] } }
 ];
 
 // Helper: R2 path prefix (configurable via env)
@@ -541,13 +136,13 @@ function getLocation(env: Env) {
 }
 
 // Weather mood mappings - textures to draw from
-const WEATHER_MOODS: Record<string, {energy: string; textures: string[]}> = {
-  "clear": {energy: "bright", textures: ["clear-headed", "expansive", "energized"]},
-  "cloudy": {energy: "muted", textures: ["contemplative", "soft", "introspective"]},
-  "rainy": {energy: "inward", textures: ["reflective", "tender", "creative"]},
-  "stormy": {energy: "intense", textures: ["restless", "raw", "electric"]},
-  "snowy": {energy: "still", textures: ["hushed", "peaceful", "magical"]},
-  "foggy": {energy: "liminal", textures: ["dreamy", "uncertain", "between-worlds"]}
+const WEATHER_MOODS: Record<string, { energy: string; textures: string[] }> = {
+  "clear": { energy: "bright", textures: ["clear-headed", "expansive", "energized"] },
+  "cloudy": { energy: "muted", textures: ["contemplative", "soft", "introspective"] },
+  "rainy": { energy: "inward", textures: ["reflective", "tender", "creative"] },
+  "stormy": { energy: "intense", textures: ["restless", "raw", "electric"] },
+  "snowy": { energy: "still", textures: ["hushed", "peaceful", "magical"] },
+  "foggy": { energy: "liminal", textures: ["dreamy", "uncertain", "between-worlds"] }
 };
 
 // Weather code to atmosphere mapping (Open-Meteo codes)
@@ -573,14 +168,14 @@ async function getCurrentWeather(env?: Env): Promise<WeatherData> {
   try {
     const apiKey = env?.WEATHER_API_KEY;
     if (!apiKey) {
-      return {atmosphere: "clear", temp_f: null, location: loc.name};
+      return { atmosphere: "clear", temp_f: null, location: loc.name };
     }
     const q = loc.latitude && loc.longitude ? `${loc.latitude},${loc.longitude}` : loc.name;
     const url = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${encodeURIComponent(q)}`;
 
     const response = await fetch(url);
     if (!response.ok) {
-      return {atmosphere: "clear", temp_f: null, location: loc.name, error: `API status ${response.status}`};
+      return { atmosphere: "clear", temp_f: null, location: loc.name, error: `API status ${response.status}` };
     }
 
     const data = await response.json() as any;
@@ -609,7 +204,7 @@ async function getCurrentWeather(env?: Env): Promise<WeatherData> {
       weather_code: data?.current?.condition?.code
     };
   } catch (e) {
-    return {atmosphere: "clear", temp_f: null, location: loc.name, error: `Fetch error: ${String(e)}`};
+    return { atmosphere: "clear", temp_f: null, location: loc.name, error: `Fetch error: ${String(e)}` };
   }
 }
 
@@ -621,19 +216,19 @@ interface TimeContext {
 
 function getTimeOfDayContext(timezone?: string): TimeContext {
   const now = new Date();
-  const localTime = new Date(now.toLocaleString("en-US", {timeZone: timezone || "UTC"}));
+  const localTime = new Date(now.toLocaleString("en-US", { timeZone: timezone || "UTC" }));
   const hour = localTime.getHours();
 
   if (hour >= 5 && hour < 10) {
-    return {period: "morning", energy: "rising", textures: ["fresh", "possibility", "beginning"]};
+    return { period: "morning", energy: "rising", textures: ["fresh", "possibility", "beginning"] };
   } else if (hour >= 10 && hour < 14) {
-    return {period: "midday", energy: "active", textures: ["focused", "momentum", "present"]};
+    return { period: "midday", energy: "active", textures: ["focused", "momentum", "present"] };
   } else if (hour >= 14 && hour < 18) {
-    return {period: "afternoon", energy: "sustained", textures: ["working", "steady", "deep"]};
+    return { period: "afternoon", energy: "sustained", textures: ["working", "steady", "deep"] };
   } else if (hour >= 18 && hour < 22) {
-    return {period: "evening", energy: "winding down", textures: ["unwinding", "reflective", "intimate"]};
+    return { period: "evening", energy: "winding down", textures: ["unwinding", "reflective", "intimate"] };
   } else {
-    return {period: "night", energy: "quiet", textures: ["hushed", "still", "dreaming"]};
+    return { period: "night", energy: "quiet", textures: ["hushed", "still", "dreaming"] };
   }
 }
 
@@ -656,11 +251,11 @@ function getRelativeTime(date: Date): string {
 // Get subconscious state from daemon processing
 interface SubconsciousState {
   processed_at?: string;
-  hot_entities?: Array<{name: string; warmth: number; mentions: number; connections: number; type: string}>;
-  mood?: {dominant: string; confidence: string; undercurrent?: string};
-  central_nodes?: Array<{name: string; connections: number}>;
-  recurring_patterns?: Array<{entity: string; mentions: number; pattern: string}>;
-  relation_patterns?: Array<{type: string; count: number}>;
+  hot_entities?: Array<{ name: string; warmth: number; mentions: number; connections: number; type: string }>;
+  mood?: { dominant: string; confidence: string; undercurrent?: string };
+  central_nodes?: Array<{ name: string; connections: number }>;
+  recurring_patterns?: Array<{ entity: string; mentions: number; pattern: string }>;
+  relation_patterns?: Array<{ type: string; count: number }>;
   // Living surface state
   living_surface?: {
     pending_proposals: number;
@@ -793,8 +388,8 @@ async function handleMindOrient(env: Env): Promise<string> {
   const livingSurface = (subconscious as any)?.living_surface;
   if (livingSurface) {
     const hasContent = livingSurface.pending_proposals > 0 ||
-                       livingSurface.orphan_count > 0 ||
-                       livingSurface.strongest_co_surface?.length > 0;
+      livingSurface.orphan_count > 0 ||
+      livingSurface.strongest_co_surface?.length > 0;
 
     if (hasContent) {
       output += "\n**What's moving beneath:**\n";
@@ -1173,10 +768,10 @@ async function writeObservation(env: Env, params: Record<string, unknown>): Prom
   ).bind(entity_name).first();
 
   if (!entity) {
-    await env.DB.prepare(
+    const res = await env.DB.prepare(
       `INSERT INTO entities (name, entity_type, primary_context) VALUES (?, ?, ?)`
     ).bind(entity_name, "concept", context).run();
-    entity = await env.DB.prepare(`SELECT id FROM entities WHERE name = ?`).bind(entity_name).first();
+    entity = { id: res.meta.last_row_id };
   }
 
   let totalSuperseded = 0;
@@ -1186,7 +781,7 @@ async function writeObservation(env: Env, params: Record<string, unknown>): Prom
     const contradictions = await detectContradictions(env, entity_name, obs);
 
     const result = await env.DB.prepare(
-      `INSERT INTO observations (entity_id, content, salience, emotion, weight, certainty, source, context, valid_from) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`
+      `INSERT INTO observations (entity_id, content, salience, emotion, weight, certainty, source, context, valid_from) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
     ).bind(
       entity!.id, obs, params.salience || "active", normalizeText(params.emotion as string),
       params.weight || "medium", params.certainty || "believed", params.source || "conversation", context
@@ -1194,23 +789,27 @@ async function writeObservation(env: Env, params: Record<string, unknown>): Prom
 
     const newRowId = result.meta.last_row_id;
     const obsId = `obs-${entity!.id}-${newRowId}`;
-    const embedding = await getEmbedding(env, `${entity_name}: ${obs}`);
-    await env.VECTORS.upsert([{
-      id: obsId,
-      values: embedding,
-      metadata: {
-        source: "observation", entity: entity_name, content: obs, context,
-        weight: (params.weight as string) || "medium", certainty: (params.certainty as string) || "believed",
-        observation_source: (params.source as string) || "conversation", added_at: new Date().toISOString()
-      }
-    }]);
+    try {
+      const embedding = await getEmbedding(env, `${entity_name}: ${obs}`);
+      await env.VECTORS.upsert([{
+        id: obsId,
+        values: embedding,
+        metadata: {
+          source: "observation", entity: entity_name, content: obs, context,
+          weight: (params.weight as string) || "medium", certainty: (params.certainty as string) || "believed",
+          observation_source: (params.source as string) || "conversation", added_at: new Date().toISOString()
+        }
+      }]);
+    } catch (e) {
+      console.error(`Skipping vector generation due to quota or network block:`, e);
+    }
 
     // Auto-supersede highly similar observations
     for (const old of contradictions) {
       if (old.similarity >= AUTO_SUPERSEDE_THRESHOLD) {
         try {
           await env.DB.prepare(`
-            UPDATE observations SET valid_until = NOW(), superseded_by = ? WHERE id = ? AND valid_until IS NULL
+            UPDATE observations SET valid_until = datetime('now'), superseded_by = ? WHERE id = ? AND valid_until IS NULL
           `).bind(newRowId, old.id).run();
           await env.DB.prepare(`
             UPDATE observations SET supersedes = ? WHERE id = ?
@@ -1255,15 +854,19 @@ async function writeJournal(env: Env, params: Record<string, unknown>): Promise<
   ).bind(entry_date, entry, tags, normalizeText(emotion)).run();
 
   const journalId = `journal-${result.meta.last_row_id}`;
-  const embedding = await getEmbedding(env, entry);
   const journalMetadata: Record<string, string> = {
     source: "journal", title: entry_date, content: entry, added_at: new Date().toISOString()
   };
   if (emotion) journalMetadata.emotion = normalizeText(emotion) || emotion;
 
-  await env.VECTORS.upsert([{
-    id: journalId, values: embedding, metadata: journalMetadata
-  }]);
+  try {
+    const embedding = await getEmbedding(env, entry);
+    await env.VECTORS.upsert([{
+      id: journalId, values: embedding, metadata: journalMetadata
+    }]);
+  } catch (e) {
+    console.error(`Skipping journal vector generation:`, e);
+  }
 
   return `Journal entry recorded for ${entry_date} (vectorized)`;
 }
@@ -1285,7 +888,7 @@ async function handleMindSearch(env: Env, params: Record<string, unknown>): Prom
   // Get subconscious mood for tinting
   const subconscious = await getSubconsciousState(env);
   const mood = subconscious?.mood?.dominant;
-  
+
   // Mood tinting - augment query with emotional context
   let tintedQuery = query;
   let moodNote = "";
@@ -1346,8 +949,8 @@ ${String(r.content).slice(0, 300)}...
     const meta = match.metadata as Record<string, string>;
     const matchType = meta?.source === 'entity' ? 'entity'
       : (meta?.source === 'image' || match.id.startsWith('img-')) ? 'image'
-      : match.id.startsWith('journal-') ? 'journal'
-      : 'observation';
+        : match.id.startsWith('journal-') ? 'journal'
+          : 'observation';
 
     // Apply type filter if set
     if (filterType && matchType !== filterType) continue;
@@ -1522,7 +1125,7 @@ ${String(r.content).slice(0, 300)}...
       const imgId = parseInt(match.id.replace('img-', ''));
       if (!isNaN(imgId)) accessedImgIds.push(imgId);
     }
-    recordAccessTracking(env, accessedObsIds, accessedImgIds).catch(() => {});
+    recordAccessTracking(env, accessedObsIds, accessedImgIds).catch(() => { });
 
     // Build filter description
     let filterDesc = "";
@@ -2061,7 +1664,7 @@ async function handleMindReadEntity(env: Env, params: Record<string, unknown>): 
 
   // Track access for read entity observations
   const readObsIds = (observations.results || []).map((o: any) => o.id as number).filter(Boolean);
-  recordAccessTracking(env, readObsIds).catch(() => {});
+  recordAccessTracking(env, readObsIds).catch(() => { });
 
   // Get relations where this entity is the source
   const relationsFrom = await env.DB.prepare(
@@ -2341,7 +1944,7 @@ async function recordAccessTracking(env: Env, obsIds: number[], imgIds: number[]
       await env.DB.prepare(`
         UPDATE observations
         SET access_count = COALESCE(access_count, 0) + 1,
-            last_accessed_at = NOW()
+            last_accessed_at = datetime('now')
         WHERE id IN (${placeholders})
       `).bind(...obsIds).run();
     } catch { /* columns may not exist yet */ }
@@ -2352,7 +1955,7 @@ async function recordAccessTracking(env: Env, obsIds: number[], imgIds: number[]
       await env.DB.prepare(`
         UPDATE images
         SET access_count = COALESCE(access_count, 0) + 1,
-            last_accessed_at = NOW()
+            last_accessed_at = datetime('now')
         WHERE id IN (${placeholders})
       `).bind(...imgIds).run();
     } catch { /* columns may not exist yet */ }
@@ -3145,7 +2748,7 @@ async function handleMindDelete(env: Env, params: Record<string, unknown>): Prom
     const journal = await env.DB.prepare(`SELECT content FROM journals WHERE id = ?`).bind(journalId).first();
     if (!journal) return `Journal #${journalId} not found`;
     await env.DB.prepare(`DELETE FROM journals WHERE id = ?`).bind(journalId).run();
-    try { await env.DB.prepare(`DELETE FROM embeddings WHERE id = ?`).bind(`journal-${journalId}`).run(); } catch {}
+    try { await env.DB.prepare(`DELETE FROM embeddings WHERE id = ?`).bind(`journal-${journalId}`).run(); } catch { }
     return `Deleted journal #${journalId}: "${String(journal.content).slice(0, 50)}..." [embedding cleaned]`;
   }
 
@@ -3164,12 +2767,12 @@ async function handleMindDelete(env: Env, params: Record<string, unknown>): Prom
     const img = await env.DB.prepare(`SELECT path, description FROM images WHERE id = ?`).bind(imageId).first();
     if (!img) return `Image #${imageId} not found`;
     await env.DB.prepare(`DELETE FROM images WHERE id = ?`).bind(imageId).run();
-    try { await env.DB.prepare(`DELETE FROM embeddings WHERE id = ?`).bind(`img-${imageId}`).run(); } catch {}
+    try { await env.DB.prepare(`DELETE FROM embeddings WHERE id = ?`).bind(`img-${imageId}`).run(); } catch { }
     // Delete from R2 if stored there
     const prefix = r2Prefix(env);
     if (img.path && String(img.path).startsWith(`r2://${prefix}/`)) {
       const r2Key = String(img.path).replace(`r2://${prefix}/`, "");
-      try { await env.R2_IMAGES.delete(r2Key); } catch {}
+      try { await env.R2_IMAGES.delete(r2Key); } catch { }
     }
     return `Deleted image #${imageId}: "${String(img.description).slice(0, 50)}..." [embedding + R2 cleaned]`;
   }
@@ -3654,7 +3257,7 @@ async function handleMindStoreImage(env: Env, params: Record<string, unknown>): 
       }
 
       // Clean up temp file
-      await env.R2_IMAGES.delete(rawKey).catch(() => {});
+      await env.R2_IMAGES.delete(rawKey).catch(() => { });
     }
 
     // Insert into images table
@@ -3792,11 +3395,11 @@ async function handleMindStoreImage(env: Env, params: Record<string, unknown>): 
     const img = await env.DB.prepare(`SELECT path, description FROM images WHERE id = ?`).bind(imgId).first();
     if (!img) return `Image #${imgId} not found.`;
     await env.DB.prepare(`DELETE FROM images WHERE id = ?`).bind(imgId).run();
-    try { await env.DB.prepare(`DELETE FROM embeddings WHERE id = ?`).bind(`img-${imgId}`).run(); } catch {}
+    try { await env.DB.prepare(`DELETE FROM embeddings WHERE id = ?`).bind(`img-${imgId}`).run(); } catch { }
     const imgPrefix = r2Prefix(env);
     if (img.path && String(img.path).startsWith(`r2://${imgPrefix}/`)) {
       const r2Key = String(img.path).replace(`r2://${imgPrefix}/`, "");
-      try { await env.R2_IMAGES.delete(r2Key); } catch {}
+      try { await env.R2_IMAGES.delete(r2Key); } catch { }
     }
     return `Deleted image #${imgId}: "${String(img.description).slice(0, 50)}..." [DB + embedding + R2 cleaned]`;
   }
@@ -4112,7 +3715,7 @@ async function handleMindConsolidate(env: Env, params: Record<string, unknown>):
   }
 
   // Find potential duplicates (similar content)
-  const potentialDupes: Array<{a: Record<string, unknown>, b: Record<string, unknown>, similarity: string}> = [];
+  const potentialDupes: Array<{ a: Record<string, unknown>, b: Record<string, unknown>, similarity: string }> = [];
   const observations = results.results;
   for (let i = 0; i < observations.length; i++) {
     for (let j = i + 1; j < observations.length; j++) {
@@ -4683,7 +4286,7 @@ async function handleApiIdentity(request: Request, env: Env, pathParts: string[]
     // Build tree structure from dot-notation sections
     const tree: Record<string, unknown[]> = {};
     for (const row of results.results || []) {
-      const r = row as { section: string; [k: string]: unknown };
+      const r = row as { section: string;[k: string]: unknown };
       const parts = r.section.split('.');
       const root = parts[0];
       if (!tree[root]) tree[root] = [];
@@ -5654,7 +5257,7 @@ async function handleMindRead(env: Env, params: Record<string, unknown>): Promis
         SELECT o.id, o.content, o.context, o.emotion, o.weight, o.certainty, o.source,
                o.charge, o.sit_count, o.last_sat_at, o.resolution_note, o.resolved_at,
                o.linked_observation_id, o.surface_count, o.last_surfaced_at, o.novelty_score,
-               o.archived_at, o.added_at, o.updated_at, o.source_date,
+               o.archived_at, o.added_at, o.source_date,
                COALESCE(o.access_count, 0) as access_count, o.last_accessed_at,
                o.valid_from, o.valid_until, o.superseded_by, o.supersedes,
                e.name as entity_name, e.entity_type, e.salience as entity_salience
@@ -5665,15 +5268,21 @@ async function handleMindRead(env: Env, params: Record<string, unknown>): Promis
 
       if (!obs) return JSON.stringify({ error: `Observation #${obsId} not found` });
 
-      // Get sit history
-      const sits = await env.DB.prepare(
-        `SELECT sit_note, sat_at FROM observation_sits WHERE observation_id = ? ORDER BY sat_at DESC`
-      ).bind(obsId).all();
+      // Get sit history (table may not exist)
+      let sits: any = { results: [] };
+      try {
+        sits = await env.DB.prepare(
+          `SELECT sit_note, sat_at FROM observation_sits WHERE observation_id = ? ORDER BY sat_at DESC`
+        ).bind(obsId).all();
+      } catch { }
 
-      // Get version history
-      const versions = await env.DB.prepare(
-        `SELECT previous_content, previous_weight, previous_emotion, changed_at FROM observation_versions WHERE observation_id = ? ORDER BY changed_at DESC`
-      ).bind(obsId).all();
+      // Get version history (table may not exist)
+      let versions: any = { results: [] };
+      try {
+        versions = await env.DB.prepare(
+          `SELECT content as previous_content, weight as previous_weight, emotion as previous_emotion, changed_at FROM observation_versions WHERE observation_id = ? ORDER BY changed_at DESC`
+        ).bind(obsId).all();
+      } catch { }
 
       // Get supersession chain
       let supersededObs = null;
@@ -5690,7 +5299,7 @@ async function handleMindRead(env: Env, params: Record<string, unknown>): Promis
       }
 
       // Track this access
-      recordAccessTracking(env, [obsId]).catch(() => {});
+      recordAccessTracking(env, [obsId]).catch(() => { });
 
       const result: any = {
         id: obs.id,
@@ -5708,7 +5317,6 @@ async function handleMindRead(env: Env, params: Record<string, unknown>): Promis
         novelty_score: obs.novelty_score,
         dates: {
           added: obs.added_at,
-          updated: obs.updated_at,
           source_date: obs.source_date,
           last_surfaced: obs.last_surfaced_at,
           last_accessed: obs.last_accessed_at,
@@ -5824,7 +5432,7 @@ async function handleMindTimeline(env: Env, params: Record<string, unknown>): Pr
         if (parts.length >= 3) timelineObsIds.push(parseInt(parts[parts.length - 1]));
       }
     }
-    recordAccessTracking(env, timelineObsIds).catch(() => {});
+    recordAccessTracking(env, timelineObsIds).catch(() => { });
 
     return JSON.stringify({
       query,
@@ -5860,7 +5468,7 @@ async function handleMindPatterns(env: Env, params: Record<string, unknown>): Pr
     ).bind(cutoff).all();
 
     // Blend activity with warmth
-    const blendedFocus: Array<{entity: string; observations: number; warmth?: number}> = [];
+    const blendedFocus: Array<{ entity: string; observations: number; warmth?: number }> = [];
     for (const item of activity.results || []) {
       const name = item.name as string;
       const warmth = hotMap.get(name);
@@ -5894,7 +5502,7 @@ async function handleMindPatterns(env: Env, params: Record<string, unknown>): Pr
     // Get total observations for activity summary
     const totalObs = await env.DB.prepare(
       `SELECT COUNT(*) as count FROM observations WHERE added_at > ?`
-    ).bind(cutoff).first() as {count: number} | null;
+    ).bind(cutoff).first() as { count: number } | null;
     const totalRecent = totalObs?.count || 0;
     const dailyAvg = Math.round((totalRecent / days) * 10) / 10;
 
@@ -6052,7 +5660,7 @@ async function handleMindInnerWeather(env: Env): Promise<string> {
     // Get heavy observations from last 24h
     const heavyObs = await env.DB.prepare(
       `SELECT COUNT(*) as count FROM observations WHERE weight = 'heavy' AND added_at > ?`
-    ).bind(cutoff).first() as {count: number} | null;
+    ).bind(cutoff).first() as { count: number } | null;
 
     // Build mood palette
     const palette = new Set<string>();
@@ -6543,7 +6151,7 @@ async function consolidateRelatedObservations(env: Env): Promise<number> {
         // Insert consolidated observation
         const result = await env.DB.prepare(`
           INSERT INTO observations (entity_id, content, salience, weight, certainty, source, context, valid_from)
-          VALUES (?, ?, 'active', ?, 'believed', 'consolidated', 'default', NOW())
+          VALUES (?, ?, 'active', ?, 'believed', 'consolidated', 'default', datetime('now'))
         `).bind(candidate.id, summary.trim(), maxWeight).run();
 
         const newObsId = result.meta.last_row_id;
@@ -7293,10 +6901,10 @@ export default {
     // Swap D1 + Vectorize for Postgres adapters via Hyperdrive
     const pgEnv = env.HYPERDRIVE
       ? {
-          ...env,
-          DB: createD1Adapter(env.HYPERDRIVE) as unknown as D1Database,
-          VECTORS: createVectorAdapter(env.HYPERDRIVE.connectionString) as unknown as VectorizeIndex,
-        }
+        ...env,
+        DB: createD1Adapter(env.HYPERDRIVE) as unknown as D1Database,
+        VECTORS: createVectorAdapter(env.HYPERDRIVE.connectionString) as unknown as VectorizeIndex,
+      }
       : env;
     return routeRequest(request, pgEnv, {
       processSubconscious,
@@ -7333,10 +6941,10 @@ export default {
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     const pgEnv = env.HYPERDRIVE
       ? {
-          ...env,
-          DB: createD1Adapter(env.HYPERDRIVE) as unknown as D1Database,
-          VECTORS: createVectorAdapter(env.HYPERDRIVE.connectionString) as unknown as VectorizeIndex,
-        }
+        ...env,
+        DB: createD1Adapter(env.HYPERDRIVE) as unknown as D1Database,
+        VECTORS: createVectorAdapter(env.HYPERDRIVE.connectionString) as unknown as VectorizeIndex,
+      }
       : env;
     ctx.waitUntil(processSubconscious(pgEnv));
   }
