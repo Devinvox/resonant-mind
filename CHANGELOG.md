@@ -4,6 +4,20 @@ All notable changes to Resonant Mind. Previously released as "Mind Cloud" (v1.0�
 
 ---
 
+## [3.1.2] - 2026-04-09
+
+### Fixed
+
+- **D1 compatibility: `NOW()` not a SQLite function** (#2) — Several handlers issued `NOW()` directly, which works on Postgres but fails on D1 with `no such function: NOW`. The most visible symptom: writing observations to an existing entity failed (the observation write path used `NOW()` for `valid_from` and the auto-supersede `valid_until`). The daemon's novelty recalculation, access-tracking on `observations` and `images`, consolidation inserts, and orphan listings were also latently broken on D1. All call sites now use `datetime('now')` — the canonical form in this codebase — and the Postgres adapter transparently upshifts it to `NOW()` at runtime.
+- **D1 compatibility: Postgres-only date arithmetic** — `EXTRACT(EPOCH FROM (NOW() - col)) / 86400` and `EXTRACT(DAY FROM AGE(NOW(), col))::INTEGER` appeared in novelty scoring, orphan age display, and the orphan API. Replaced with `julianday()` differences (native SQLite; translated to `EXTRACT(EPOCH FROM ...::timestamptz) / 86400.0` by the adapter for Postgres users).
+- **`mind_read` scope=observation crash: `no such column: o.updated_at`** (#1) — The scope=observation SELECT in `handleMindRead` referenced `o.updated_at`, but the `observations` table has no such column in either the SQLite or Postgres migrations. (This is the same class of bug as the v2.6.1 `mind_edit` fix — it regressed into a different code path.) Removed the column from the SELECT and from the result mapping.
+
+### Adapter
+
+- Added `julianday(X) → (EXTRACT(EPOCH FROM (X)::timestamptz) / 86400.0)` rule to `createD1Adapter`. Safe only inside differences (the Julian Day constant cancels), which is how the codebase uses it.
+
+---
+
 ## [3.1.1] - 2026-03-29
 
 ### Fixed

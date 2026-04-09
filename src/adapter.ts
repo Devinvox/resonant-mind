@@ -8,8 +8,11 @@
  * 1. ? → $1, $2, ... (state machine, respects string literals)
  * 2. datetime('now') → NOW()
  * 3. datetime('now', '-N unit') → NOW() - INTERVAL 'N unit'
- * 4. INSERT OR IGNORE → INSERT ... ON CONFLICT DO NOTHING
- * 5. .run() on INSERTs → appends RETURNING id for meta.last_row_id
+ * 4. julianday(X) → (EXTRACT(EPOCH FROM (X)::timestamptz) / 86400.0)
+ *    Only correct inside differences (the 2440587.5 constant cancels), which
+ *    is how the codebase uses it. Do not introduce standalone julianday() calls.
+ * 5. INSERT OR IGNORE → INSERT ... ON CONFLICT DO NOTHING
+ * 6. .run() on INSERTs → appends RETURNING id for meta.last_row_id
  */
 
 import { Client } from "pg";
@@ -96,6 +99,15 @@ function transformSql(sql: string): string {
 
   // datetime('now') → NOW()
   s = s.replace(/datetime\(\s*'now'\s*\)/gi, "NOW()");
+
+  // julianday(X) → (EXTRACT(EPOCH FROM (X)::timestamptz) / 86400.0)
+  // Safe only inside subtractions (codebase usage). The Julian Day offset
+  // cancels in differences, so julianday(A) - julianday(B) yields days between.
+  // Handles julianday('now') too — Postgres accepts 'now'::timestamptz.
+  s = s.replace(
+    /julianday\(\s*([^)]+?)\s*\)/gi,
+    (_match, arg: string) => `(EXTRACT(EPOCH FROM (${arg})::timestamptz) / 86400.0)`
+  );
 
   // INSERT OR IGNORE INTO → INSERT INTO ... (ON CONFLICT DO NOTHING appended later)
   s = s.replace(/INSERT\s+OR\s+IGNORE\s+INTO/gi, "INSERT INTO");

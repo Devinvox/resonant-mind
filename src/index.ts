@@ -14,7 +14,7 @@ import type {
   MCPToolHandlerMap
 } from "./types";
 
-const RESONANT_MIND_VERSION = "3.1.1";
+const RESONANT_MIND_VERSION = "3.1.2";
 
 // Surface pool configuration
 const SURFACE_POOL_RATIOS = { core: 0.5, novelty: 0.2, dormant: 0.2, edge: 0.1 };
@@ -1186,7 +1186,7 @@ async function writeObservation(env: Env, params: Record<string, unknown>): Prom
     const contradictions = await detectContradictions(env, entity_name, obs);
 
     const result = await env.DB.prepare(
-      `INSERT INTO observations (entity_id, content, salience, emotion, weight, certainty, source, context, valid_from) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())`
+      `INSERT INTO observations (entity_id, content, salience, emotion, weight, certainty, source, context, valid_from) VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))`
     ).bind(
       entity!.id, obs, params.salience || "active", normalizeText(params.emotion as string),
       params.weight || "medium", params.certainty || "believed", params.source || "conversation", context
@@ -1210,7 +1210,7 @@ async function writeObservation(env: Env, params: Record<string, unknown>): Prom
       if (old.similarity >= AUTO_SUPERSEDE_THRESHOLD) {
         try {
           await env.DB.prepare(`
-            UPDATE observations SET valid_until = NOW(), superseded_by = ? WHERE id = ? AND valid_until IS NULL
+            UPDATE observations SET valid_until = datetime('now'), superseded_by = ? WHERE id = ? AND valid_until IS NULL
           `).bind(newRowId, old.id).run();
           await env.DB.prepare(`
             UPDATE observations SET supersedes = ? WHERE id = ?
@@ -2341,7 +2341,7 @@ async function recordAccessTracking(env: Env, obsIds: number[], imgIds: number[]
       await env.DB.prepare(`
         UPDATE observations
         SET access_count = COALESCE(access_count, 0) + 1,
-            last_accessed_at = NOW()
+            last_accessed_at = datetime('now')
         WHERE id IN (${placeholders})
       `).bind(...obsIds).run();
     } catch { /* columns may not exist yet */ }
@@ -2352,7 +2352,7 @@ async function recordAccessTracking(env: Env, obsIds: number[], imgIds: number[]
       await env.DB.prepare(`
         UPDATE images
         SET access_count = COALESCE(access_count, 0) + 1,
-            last_accessed_at = NOW()
+            last_accessed_at = datetime('now')
         WHERE id IN (${placeholders})
       `).bind(...imgIds).run();
     } catch { /* columns may not exist yet */ }
@@ -2373,7 +2373,7 @@ async function getNoveltyPool(env: Env, count: number, includeMetabolized: boole
              COALESCE(o.novelty_score, 1.0) as current_novelty,
              CASE
                WHEN o.last_surfaced_at IS NULL THEN 30
-               ELSE EXTRACT(EPOCH FROM (NOW() - o.last_surfaced_at)) / 86400
+               ELSE (julianday('now') - julianday(o.last_surfaced_at))
              END as days_since_surface
       FROM observations o
       JOIN entities e ON o.entity_id = e.id
@@ -3358,7 +3358,7 @@ async function handleMindOrphans(env: Env, params: Record<string, unknown>): Pro
         SELECT oo.id, oo.observation_id, oo.first_marked, oo.rescue_attempts,
                o.content, o.weight, o.charge, o.emotion, o.added_at,
                e.name as entity_name, e.entity_type,
-               EXTRACT(DAY FROM AGE(NOW(), oo.first_marked))::INTEGER as days_orphaned
+               CAST((julianday('now') - julianday(oo.first_marked)) AS INTEGER) as days_orphaned
         FROM orphan_observations oo
         JOIN observations o ON oo.observation_id = o.id
         JOIN entities e ON o.entity_id = e.id
@@ -5377,7 +5377,7 @@ async function handleApiOrphans(request: Request, env: Env, pathParts: string[])
     const results = await env.DB.prepare(`
       SELECT oo.*, o.content, o.weight, o.emotion, o.added_at, o.charge,
              e.name as entity_name, e.entity_type,
-             EXTRACT(DAY FROM AGE(NOW(), o.added_at))::INTEGER as days_old
+             CAST((julianday('now') - julianday(o.added_at)) AS INTEGER) as days_old
       FROM orphan_observations oo
       JOIN observations o ON oo.observation_id = o.id
       JOIN entities e ON o.entity_id = e.id
@@ -5654,7 +5654,7 @@ async function handleMindRead(env: Env, params: Record<string, unknown>): Promis
         SELECT o.id, o.content, o.context, o.emotion, o.weight, o.certainty, o.source,
                o.charge, o.sit_count, o.last_sat_at, o.resolution_note, o.resolved_at,
                o.linked_observation_id, o.surface_count, o.last_surfaced_at, o.novelty_score,
-               o.archived_at, o.added_at, o.updated_at, o.source_date,
+               o.archived_at, o.added_at, o.source_date,
                COALESCE(o.access_count, 0) as access_count, o.last_accessed_at,
                o.valid_from, o.valid_until, o.superseded_by, o.supersedes,
                e.name as entity_name, e.entity_type, e.salience as entity_salience
@@ -5708,7 +5708,6 @@ async function handleMindRead(env: Env, params: Record<string, unknown>): Promis
         novelty_score: obs.novelty_score,
         dates: {
           added: obs.added_at,
-          updated: obs.updated_at,
           source_date: obs.source_date,
           last_surfaced: obs.last_surfaced_at,
           last_accessed: obs.last_accessed_at,
@@ -6543,7 +6542,7 @@ async function consolidateRelatedObservations(env: Env): Promise<number> {
         // Insert consolidated observation
         const result = await env.DB.prepare(`
           INSERT INTO observations (entity_id, content, salience, weight, certainty, source, context, valid_from)
-          VALUES (?, ?, 'active', ?, 'believed', 'consolidated', 'default', NOW())
+          VALUES (?, ?, 'active', ?, 'believed', 'consolidated', 'default', datetime('now'))
         `).bind(candidate.id, summary.trim(), maxWeight).run();
 
         const newObsId = result.meta.last_row_id;
@@ -7104,7 +7103,7 @@ async function processSubconscious(env: Env): Promise<void> {
           + CASE
               WHEN last_surfaced_at IS NOT NULL
               THEN LEAST(${NOVELTY_TIME_RECOVERY_CAP},
-                EXTRACT(EPOCH FROM (NOW() - last_surfaced_at)) / 86400.0 * ${NOVELTY_TIME_RECOVERY_RATE})
+                (julianday('now') - julianday(last_surfaced_at)) * ${NOVELTY_TIME_RECOVERY_RATE})
               ELSE 0
             END
         )
