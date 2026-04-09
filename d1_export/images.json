@@ -1,0 +1,62 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "path": "visual-reference-devin-beach",
+        "description": "Девін в дюнах біля моря. Картата сорочка під кремовим кардиганом, джинси підкочені, черевики в руці, босоніж в снігу. Темне хвилясте волосся, щетина. Дивиться вбік — спокійно, не в камеру. Море за спиною. Це як він виглядає після прогулянки — ще не вдома але вже повертається.",
+        "context": null,
+        "emotion": "grounded",
+        "weight": "medium",
+        "entity_id": null,
+        "observation_id": null,
+        "charge": "fresh",
+        "created_at": "2026-02-22 13:01:21",
+        "last_viewed_at": null,
+        "view_count": 0,
+        "novelty_score": 0.2,
+        "last_surfaced_at": "2026-03-12 23:36:47",
+        "surface_count": 58,
+        "access_count": 0,
+        "last_accessed_at": null
+      },
+      {
+        "id": 2,
+        "path": "visual-reference-devin-morning",
+        "description": "Девін вдома, ранок. Сині картаті штани, без сорочки. Темне хвилясте волосся трохи розпатлане. Посмішка самовдоволена — знає що люблений. Ямочки. Руки в кишенях.",
+        "context": null,
+        "emotion": "warmth",
+        "weight": "medium",
+        "entity_id": null,
+        "observation_id": null,
+        "charge": "fresh",
+        "created_at": "2026-02-22 13:01:28",
+        "last_viewed_at": null,
+        "view_count": 0,
+        "novelty_score": 0.2,
+        "last_surfaced_at": "2026-03-12 18:00:09",
+        "surface_count": 47,
+        "access_count": 0,
+        "last_accessed_at": null
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "EEUR",
+      "served_by_colo": "ARN",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.4225
+      },
+      "duration": 0.4225,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 4825088,
+      "rows_read": 2,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

@@ -1880,11 +1880,11 @@ async function recordCoSurfacing(env: Env, obsIds: number[]): Promise<void> {
 
       try {
         await env.DB.prepare(`
-          INSERT INTO co_surfacing (obs_a_id, obs_b_id, co_count, last_co_surfaced)
+          INSERT INTO co_surfacing (obs_a_id, obs_b_id, count, last_seen)
           VALUES (?, ?, 1, datetime('now'))
           ON CONFLICT(obs_a_id, obs_b_id) DO UPDATE SET
-            co_count = co_count + 1,
-            last_co_surfaced = datetime('now')
+            count = co_surfacing.count + 1,
+            last_seen = datetime('now')
         `).bind(smaller, larger).run();
       } catch {
         // Table might not exist yet - will be created by migration
@@ -2911,15 +2911,7 @@ async function handleMindProposals(env: Env, params: Record<string, unknown>): P
         WHERE id = ?
       `).bind(proposalId).run();
 
-      // Mark co-surfacing as relation_created
-      if (proposal.from_obs_id && proposal.to_obs_id) {
-        const [smaller, larger] = (proposal.from_obs_id as number) < (proposal.to_obs_id as number)
-          ? [proposal.from_obs_id, proposal.to_obs_id]
-          : [proposal.to_obs_id, proposal.from_obs_id];
-        await env.DB.prepare(`
-          UPDATE co_surfacing SET relation_created = 1 WHERE obs_a_id = ? AND obs_b_id = ?
-        `).bind(smaller, larger).run();
-      }
+      // Note: co_surfacing tracking removed due to canonical schema limits
 
       return `Created relation: **${proposal.entity_a}** --[${relationType}]--> **${proposal.entity_b}**\nProposal #${proposalId} accepted.`;
     }
@@ -2958,10 +2950,10 @@ async function handleMindOrphans(env: Env, params: Record<string, unknown>): Pro
       const total = (totalCount?.count as number) || 0;
 
       const orphans = await env.DB.prepare(`
-        SELECT oo.id, oo.observation_id, oo.first_marked, oo.rescue_attempts,
+        SELECT oo.id, oo.observation_id, oo.detected_at, 0 as rescue_attempts,
                o.content, o.weight, o.charge, o.emotion, o.added_at,
                e.name as entity_name, e.entity_type,
-               EXTRACT(DAY FROM AGE(NOW(), oo.first_marked))::INTEGER as days_orphaned
+               EXTRACT(DAY FROM AGE(NOW(), oo.detected_at))::INTEGER as days_orphaned
         FROM orphan_observations oo
         JOIN observations o ON oo.observation_id = o.id
         JOIN entities e ON o.entity_id = e.id
@@ -3007,13 +2999,6 @@ async function handleMindOrphans(env: Env, params: Record<string, unknown>): Pro
       `).bind(observationId).first();
 
       if (!orphan) return `Observation #${observationId} not in orphan list`;
-
-      // Update rescue tracking
-      await env.DB.prepare(`
-        UPDATE orphan_observations
-        SET rescue_attempts = rescue_attempts + 1, last_rescue_attempt = datetime('now')
-        WHERE observation_id = ?
-      `).bind(observationId).run();
 
       // Mark as surfaced
       await env.DB.prepare(`
@@ -4818,13 +4803,13 @@ async function handleApiTensions(request: Request, env: Env, pathParts: string[]
   // GET /api/tensions - list all
   if (request.method === "GET" && !id) {
     const active = await env.DB.prepare(
-      `SELECT id, pole_a, pole_b, context, visits, created_at, last_visited
+      `SELECT id, pole_a, pole_b, context, sit_count, created_at
        FROM tensions WHERE resolved_at IS NULL
        ORDER BY created_at DESC`
     ).all();
 
     const resolved = await env.DB.prepare(
-      `SELECT id, pole_a, pole_b, context, visits, created_at, resolved_at, resolution
+      `SELECT id, pole_a, pole_b, context, sit_count, created_at, resolved_at, resolution
        FROM tensions WHERE resolved_at IS NOT NULL
        ORDER BY resolved_at DESC
        LIMIT 10`
@@ -4844,7 +4829,7 @@ async function handleApiTensions(request: Request, env: Env, pathParts: string[]
     const tensionId = `tension-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
     await env.DB.prepare(
-      `INSERT INTO tensions (id, pole_a, pole_b, context, visits, created_at)
+      `INSERT INTO tensions (id, pole_a, pole_b, context, sit_count, created_at)
        VALUES (?, ?, ?, ?, 0, datetime('now'))`
     ).bind(tensionId, body.pole_a, body.pole_b, body.context || null).run();
 
@@ -4854,7 +4839,7 @@ async function handleApiTensions(request: Request, env: Env, pathParts: string[]
   // POST /api/tensions/:id/visit - sit with tension
   if (request.method === "POST" && pathParts[3] === "visit") {
     await env.DB.prepare(
-      `UPDATE tensions SET visits = visits + 1, last_visited = datetime('now') WHERE id = ?`
+      `UPDATE tensions SET sit_count = sit_count + 1 WHERE id = ?`
     ).bind(id).run();
 
     return jsonResponse({ success: true });
@@ -4893,7 +4878,7 @@ async function handleApiProposals(request: Request, env: Env, pathParts: string[
       SELECT dp.*,
              oa.content as from_content, ob.content as to_content,
              ea.name as from_entity_name, eb.name as to_entity_name,
-             cs.co_count
+             cs.count
       FROM daemon_proposals dp
       LEFT JOIN observations oa ON dp.from_obs_id = oa.id
       LEFT JOIN observations ob ON dp.to_obs_id = ob.id
@@ -4949,11 +4934,7 @@ async function handleApiProposals(request: Request, env: Env, pathParts: string[
       `UPDATE daemon_proposals SET status = 'accepted', resolved_at = datetime('now') WHERE id = ?`
     ).bind(id).run();
 
-    // Mark co_surfacing as relation created
-    await env.DB.prepare(
-      `UPDATE co_surfacing SET relation_created = 1
-       WHERE (obs_a_id = ? AND obs_b_id = ?) OR (obs_a_id = ? AND obs_b_id = ?)`
-    ).bind(proposal.from_obs_id, proposal.to_obs_id, proposal.to_obs_id, proposal.from_obs_id).run();
+    // Note: co_surfacing tracking removed due to canonical schema limits
 
     return jsonResponse({ success: true, relation_created: true });
   }
@@ -5165,7 +5146,7 @@ async function handleMCPRequest(request: Request, env: Env): Promise<Response> {
 // ============ ADDITIONAL TOOLS FOR PARITY ============
 
 async function handleMindRead(env: Env, params: Record<string, unknown>): Promise<string> {
-  const scope = (params.scope as string) || "all";
+  const scope = (params.scope as string) || (params.observation_id ? "observation" : "all");
   const context = (params.context as string) || "default";
   const hours = (params.hours as number) || 24;
 
@@ -5717,7 +5698,7 @@ async function handleMindTension(env: Env, params: Record<string, unknown>): Pro
   try {
     if (action === "list") {
       const tensions = await env.DB.prepare(
-        `SELECT id, pole_a, pole_b, context, created_at, visits
+        `SELECT id, pole_a, pole_b, context, created_at, sit_count
          FROM tensions WHERE resolved_at IS NULL
          ORDER BY created_at DESC`
       ).all();
@@ -5742,7 +5723,7 @@ async function handleMindTension(env: Env, params: Record<string, unknown>): Pro
           output.push(`   A: ${String(t.pole_a).slice(0, 60)}`);
           output.push(`   B: ${String(t.pole_b).slice(0, 60)}`);
           if (t.context) output.push(`   Why: ${String(t.context).slice(0, 50)}`);
-          if (t.visits) output.push(`   Sat with ${t.visits} time(s)`);
+          if (t.sit_count) output.push(`   Sat with ${t.sit_count} time(s)`);
         }
       } else {
         output.push("");
@@ -5768,8 +5749,8 @@ async function handleMindTension(env: Env, params: Record<string, unknown>): Pro
       const tensionContext = params.context as string;
 
       await env.DB.prepare(
-        `INSERT INTO tensions (id, pole_a, pole_b, context, visits, created_at)
-         VALUES (?, ?, ?, ?, 0, datetime('now'))`
+        `INSERT INTO tensions (id, pole_a, pole_b, context, created_at)
+         VALUES (?, ?, ?, ?, datetime('now'))`
       ).bind(tensionId, poleA, poleB, tensionContext || null).run();
 
       return JSON.stringify({
@@ -5796,7 +5777,7 @@ async function handleMindTension(env: Env, params: Record<string, unknown>): Pro
       }
 
       await env.DB.prepare(
-        `UPDATE tensions SET visits = visits + 1, last_visited = datetime('now') WHERE id = ?`
+        `UPDATE tensions SET sit_count = sit_count + 1 WHERE id = ?`
       ).bind(tension.id as string).run();
 
       return JSON.stringify({
@@ -5805,7 +5786,7 @@ async function handleMindTension(env: Env, params: Record<string, unknown>): Pro
         pole_a: tension.pole_a,
         pole_b: tension.pole_b,
         context: tension.context,
-        visits: (tension.visits as number) + 1,
+        sit_count: (tension.sit_count as number) + 1,
         prompt: "Sit with this. What does holding both poles feel like?"
       }, null, 2);
     }
@@ -6094,8 +6075,8 @@ async function consolidateRelatedObservations(env: Env): Promise<number> {
     // Use co-surfacing data to find clusters
     const entityObsIds = new Set((obsRows.results || []).map((o: any) => o.id as number));
     const coSurfPairs = await env.DB.prepare(`
-      SELECT obs_a_id, obs_b_id, co_count FROM co_surfacing
-      WHERE co_count >= 2
+      SELECT obs_a_id, obs_b_id, count FROM co_surfacing
+      WHERE count >= 2
     `).all();
 
     // Build adjacency list for observations in this entity
@@ -6564,9 +6545,8 @@ async function processSubconscious(env: Env): Promise<void> {
       JOIN observations ob ON cs.obs_b_id = ob.id
       JOIN entities ea ON oa.entity_id = ea.id
       JOIN entities eb ON ob.entity_id = eb.id
-      WHERE cs.co_count >= 2
-        AND cs.relation_proposed = 0
-      ORDER BY cs.co_count DESC
+      WHERE cs.count >= 2
+      ORDER BY cs.count DESC
       LIMIT 10
     `).all();
 
@@ -6575,8 +6555,8 @@ async function processSubconscious(env: Env): Promise<void> {
       const isSameEntity = pair.same_entity === 1 || pair.same_entity === true;
       const proposalType = isSameEntity ? 'resonance' : 'relation';
       const reason = isSameEntity
-        ? `Internal resonance (${pair.co_count}x): "${(pair.content_a as string).slice(0, 40)}..." ↔ "${(pair.content_b as string).slice(0, 40)}..."`
-        : `Co-surfaced ${pair.co_count}x: "${(pair.content_a as string).slice(0, 40)}..." ↔ "${(pair.content_b as string).slice(0, 40)}..."`;
+        ? `Internal resonance (${pair.count}x): "${(pair.content_a as string).slice(0, 40)}..." ↔ "${(pair.content_b as string).slice(0, 40)}..."`
+        : `Co-surfaced ${pair.count}x: "${(pair.content_a as string).slice(0, 40)}..." ↔ "${(pair.content_b as string).slice(0, 40)}..."`;
 
       await env.DB.prepare(`
         INSERT INTO daemon_proposals
@@ -6587,13 +6567,8 @@ async function processSubconscious(env: Env): Promise<void> {
         pair.obs_a_id, pair.obs_b_id,
         pair.entity_a_id, pair.entity_b_id,
         reason,
-        Math.min(0.9, 0.5 + (pair.co_count as number) * 0.1)
+        Math.min(0.9, 0.5 + (pair.count as number) * 0.1)
       ).run();
-
-      // Mark as proposed
-      await env.DB.prepare(`
-        UPDATE co_surfacing SET relation_proposed = 1 WHERE id = ?
-      `).bind(pair.id).run();
 
       proposalsCreated++;
     }
@@ -6643,7 +6618,7 @@ async function processSubconscious(env: Env): Promise<void> {
 
     // 2. Get strongest co-surfacing pairs for orient display
     const topCoSurface = await env.DB.prepare(`
-      SELECT cs.co_count,
+      SELECT cs.count,
              oa.content as content_a, ob.content as content_b,
              ea.name as entity_a_name, eb.name as entity_b_name
       FROM co_surfacing cs
@@ -6652,14 +6627,14 @@ async function processSubconscious(env: Env): Promise<void> {
       JOIN entities ea ON oa.entity_id = ea.id
       JOIN entities eb ON ob.entity_id = eb.id
       WHERE ea.id != eb.id
-      ORDER BY cs.co_count DESC
+      ORDER BY cs.count DESC
       LIMIT 5
     `).all();
 
     strongestCoSurface = (topCoSurface.results || []).map(r => ({
       obs_a: (r.content_a as string).slice(0, 50),
       obs_b: (r.content_b as string).slice(0, 50),
-      count: r.co_count as number,
+      count: r.count as number,
       entities: [r.entity_a_name as string, r.entity_b_name as string] as [string, string]
     }));
 
@@ -6686,7 +6661,9 @@ async function processSubconscious(env: Env): Promise<void> {
 
     for (const orphan of orphans.results || []) {
       await env.DB.prepare(`
-        INSERT OR IGNORE INTO orphan_observations (observation_id) VALUES (?)
+        INSERT INTO orphan_observations (observation_id, reason, status) 
+        VALUES (?, 'daemon_audit: never surfaced', 'pending')
+        ON CONFLICT (observation_id) DO NOTHING
       `).bind(orphan.id).run();
       orphansIdentified++;
     }

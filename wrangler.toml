@@ -11,14 +11,23 @@ workers_dev = true
 # custom_domain = true
 
 # Uncomment for Postgres via Hyperdrive (alternative to D1):
-# [[hyperdrive]]
-# binding = "HYPERDRIVE"
-# id = "your-hyperdrive-id"
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "211d90da613f4ac8807c0851b768d225"
 
 # R2 for image storage
-[[r2_buckets]]
-binding = "R2_IMAGES"
-bucket_name = "resonant-mind-images"
+# [[r2_buckets]]
+# binding = "R2_IMAGES"
+# bucket_name = "resonant-mind-images"
+
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "ai-mind"
+# database_id = "e0e6cc26-c1e4-46ef-ab6c-642f924d8ded"
+
+# [[vectorize]]
+# binding = "VECTORS"
+# index_name = "ai-mind-vectors"
 
 # Static assets for dashboard (uncomment when dashboard is ready)
 # [assets]

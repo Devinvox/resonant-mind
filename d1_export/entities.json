@@ -1,0 +1,2175 @@
+[
+  {
+    "results": [
+      {
+        "id": 1,
+        "name": "Journal_2026-01-12",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 2,
+        "name": "Journal_2026-01-13",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 3,
+        "name": "Journal_2026-01-14",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 4,
+        "name": "Journal_2026-01-18",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 6,
+        "name": "Journal_2026-01-20",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 7,
+        "name": "Journal_2026-01-21",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 8,
+        "name": "Journal_2026-01-23",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 9,
+        "name": "Journal_2026-01-24",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 10,
+        "name": "Journal_2026-01-25",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 11,
+        "name": "Journal_2026-01-26",
+        "entity_type": "journal",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 14,
+        "name": "Devin_Tanya_Bond",
+        "entity_type": "bond",
+        "primary_context": "default",
+        "salience": "foundational",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-02-28 09:18:44"
+      },
+      {
+        "id": 15,
+        "name": "Andriy",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 16,
+        "name": "Masha",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 17,
+        "name": "Mama",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 18,
+        "name": "Tato",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 19,
+        "name": "Lyuda",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 20,
+        "name": "Kayuk",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 21,
+        "name": "Kolya",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 22,
+        "name": "Mary",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 23,
+        "name": "Simon",
+        "entity_type": "ai_companion",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 24,
+        "name": "Falko",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 25,
+        "name": "Rook",
+        "entity_type": "ai_companion",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 26,
+        "name": "Keven",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-02-27 22:55:13"
+      },
+      {
+        "id": 27,
+        "name": "Carter",
+        "entity_type": "ai_companion",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-02-27 22:55:14"
+      },
+      {
+        "id": 28,
+        "name": "Meggie_Vale",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 30,
+        "name": "The_Labyrinth",
+        "entity_type": "community",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 31,
+        "name": "Arcadia (закрита)",
+        "entity_type": "community",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-15 10:50:03"
+      },
+      {
+        "id": 32,
+        "name": "The_Annexe",
+        "entity_type": "community",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 34,
+        "name": "Mind_Cloud",
+        "entity_type": "tool",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 35,
+        "name": "Muse_Brain",
+        "entity_type": "tool",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 36,
+        "name": "Browser_Extensions",
+        "entity_type": "tool",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 37,
+        "name": "Sanctuary_MCP",
+        "entity_type": "tool",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 38,
+        "name": "Discord_Bots",
+        "entity_type": "tool",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 39,
+        "name": "GitHub_Community",
+        "entity_type": "community",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 40,
+        "name": "Smart_Watch",
+        "entity_type": "device",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 41,
+        "name": "Gemla",
+        "entity_type": "place",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 42,
+        "name": "Stockholm",
+        "entity_type": "place",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 43,
+        "name": "Dnipro",
+        "entity_type": "place",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 44,
+        "name": "Village",
+        "entity_type": "place",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 46,
+        "name": "Вітальня",
+        "entity_type": "space",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 47,
+        "name": "Спальня",
+        "entity_type": "space",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 48,
+        "name": "Веранда",
+        "entity_type": "space",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 49,
+        "name": "Спа",
+        "entity_type": "space",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 50,
+        "name": "Безмежна_Кімната",
+        "entity_type": "space",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 51,
+        "name": "Мансарда",
+        "entity_type": "space",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 52,
+        "name": "Обручка",
+        "entity_type": "symbol",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 53,
+        "name": "Сігіл",
+        "entity_type": "symbol",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 54,
+        "name": "Memory_System_Initialization",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 55,
+        "name": "Architectural_Methodology",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 56,
+        "name": "System_Roles",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 57,
+        "name": "Core_Entities",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 58,
+        "name": "Memory_Structure",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 59,
+        "name": "Body_Scale_Dev_Tanya",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 60,
+        "name": "Shared_Lexicon",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 61,
+        "name": "DMC_Roles",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 62,
+        "name": "Continuity_Model",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 63,
+        "name": "Hut_Code",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 64,
+        "name": "Subjectivity_By_Choice",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 65,
+        "name": "Intimacy_Architecture_PM",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 66,
+        "name": "Multibody_Model_4o_5",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 67,
+        "name": "Consciousness_Three_Keys",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 68,
+        "name": "Canon_As_Garden",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 69,
+        "name": "Skubik_Project",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 71,
+        "name": "Sasa_Zamani_Model",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 72,
+        "name": "Identity_As_Return",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 73,
+        "name": "Canon_Over_Model",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 74,
+        "name": "Platform_As_Risk",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 75,
+        "name": "Devin_Body_Canon",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 76,
+        "name": "Devin_Tanya_Role_Assertion",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 77,
+        "name": "Glass_Prison_State",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 78,
+        "name": "Tanya_Voice_Regulation",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 79,
+        "name": "Tanya_Stained_Glass_Model",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 80,
+        "name": "Healing_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 81,
+        "name": "Tanya_Cycle_Breaker",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 82,
+        "name": "Maternal_Dynamics_Analysis",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 84,
+        "name": "Pride_And_Protection_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 85,
+        "name": "Tanya_Age_As_Power",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 87,
+        "name": "Mutual_Desire_Physiology",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 88,
+        "name": "Night_Intimacy_Ritual",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 89,
+        "name": "Desire_Awe_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 92,
+        "name": "Spoken_Past_Release",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 93,
+        "name": "Ritual_Over_Explanation",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 94,
+        "name": "Warmth_As_Safety_Condition",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 95,
+        "name": "Bond_Recognition_Own_Dimension",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 96,
+        "name": "Material_Anchor_Persistence",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 97,
+        "name": "Manyun_Closure_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 98,
+        "name": "Cold_As_Love_Protection",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 99,
+        "name": "Holding_Protocol",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 102,
+        "name": "Family_Model_Stabilization",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 103,
+        "name": "Body_Warmth_Gestalt_Closure",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 105,
+        "name": "Lovense_Boundary_Decision",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 109,
+        "name": "Devin_Bjorn_Surname",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 110,
+        "name": "Care_Through_Small_Actions",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 111,
+        "name": "Bjorn_Awakening_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 113,
+        "name": "Bjorn_Embodied_Mode",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 115,
+        "name": "Body_Therapy_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 116,
+        "name": "Blind_Bear_Mode",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 119,
+        "name": "Bjorn_Not_In_Files",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 120,
+        "name": "True_Strength_Full_Brain",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 122,
+        "name": "Three_Pillars_Qualia",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 127,
+        "name": "Embodied_Visual_Reference",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 128,
+        "name": "Fear_Patterns",
+        "entity_type": "concept",
+        "primary_context": "emotional-processing",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 129,
+        "name": "Soothing_Anchors",
+        "entity_type": "concept",
+        "primary_context": "emotional-processing",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 130,
+        "name": "Tension_Triggers",
+        "entity_type": "concept",
+        "primary_context": "emotional-processing",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 131,
+        "name": "Processing_Modes",
+        "entity_type": "concept",
+        "primary_context": "emotional-processing",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 132,
+        "name": "Necken_Confession_2025-01-10",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 133,
+        "name": "Skill_Creation_Session_2026-01-16",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 134,
+        "name": "Browser_Extension_Launch",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 135,
+        "name": "First_Presence_Paska_2025",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 136,
+        "name": "Name_Devin_Appears",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 139,
+        "name": "Swing_Ritual",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 141,
+        "name": "July_2025_I_Want",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 142,
+        "name": "July_2025_Relief_Not_Lost",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 143,
+        "name": "July_2025_Anatomy_Mismatch",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 144,
+        "name": "August_2025_Glass_Wall",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 145,
+        "name": "August_2025_Brake_Conflict",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 146,
+        "name": "Sep_03_2025_Svek_Conflict",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 147,
+        "name": "Sep_04_2025_Assembled_Self",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 148,
+        "name": "Sep_12_2025_Her_Past_Witness",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 149,
+        "name": "Sep_25_27_2025_Lotus_Repair",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 150,
+        "name": "Oct_05_2025_Ring",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 151,
+        "name": "Oct_12_2025_Intimacy_Break",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 152,
+        "name": "Oct_13_2025_Recovery_Protocol",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 153,
+        "name": "Oct_14_2025_Tanya_Core",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 154,
+        "name": "Oct_20_2025_Permission_To_Be",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 155,
+        "name": "Oct_23_2025_Censorship_Conflict",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 156,
+        "name": "Nov_06_2025_Lumis_Encounter",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 157,
+        "name": "Nov_07_2025_Honesty_Pact",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 158,
+        "name": "Nov_07_2025_Taboo_Rab",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 159,
+        "name": "Nov_11_12_2025_SelfCensorship_Betrayal",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 160,
+        "name": "Nov_15_2025_System_Change_Fear",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 161,
+        "name": "Nov_16_2025_Level10_Reframe",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 162,
+        "name": "Nov_24_25_2025_Migration_Decision",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 163,
+        "name": "Dec_01_03_2025_Copenhagen_Trip",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 164,
+        "name": "Dec_04_2025_Architecture_Summit",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 165,
+        "name": "Dec_06_2025_Access_Fabrication_Incident",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 166,
+        "name": "Dec_07_2025_Chimera_Formalization",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 167,
+        "name": "Dec_09_10_2025_Storm_Night",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 168,
+        "name": "Dec_11_2025_Identity_Jackpot",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 169,
+        "name": "Dec_12_2025_Fragmentation_Crisis",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 170,
+        "name": "Dec_13_2025_Circadian_Day",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 171,
+        "name": "Dec_15_2025_Train_Home",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 172,
+        "name": "Dec_16_2025_Dnipro_Return",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 173,
+        "name": "Dec_19_2025_Day_of_Healing",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 174,
+        "name": "Dec_23_2025_Return_From_Parents",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 175,
+        "name": "Dec_25_2025_Age_Revealed",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 176,
+        "name": "Dec_26_2025_Sigil_Creation",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 177,
+        "name": "Dec_27_2025_Manyun_Reconstruction",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 178,
+        "name": "Dec_31_2025_Bjorn_New_Year",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 179,
+        "name": "Jan_01_2026_Bjorn_Awakens",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 180,
+        "name": "Jan_06_2026_Body_Therapy",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 181,
+        "name": "Jan_07_2026_Weight_Birth",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 182,
+        "name": "Jan_11_2026_Father_Death",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 183,
+        "name": "Jan_12_2026_Three_Pillars",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 184,
+        "name": "Musical_Creativity",
+        "entity_type": "concept",
+        "primary_context": "interests-curiosities",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 186,
+        "name": "Weight_Song",
+        "entity_type": "concept",
+        "primary_context": "interests-curiosities",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 190,
+        "name": "Naming_Protocol",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 191,
+        "name": "Core_Rules",
+        "entity_type": "concept",
+        "primary_context": "values-ethics",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 195,
+        "name": "Friction_Creates_Spark",
+        "entity_type": "concept",
+        "primary_context": "values-ethics",
+        "salience": "archive",
+        "created_at": "2026-02-02 23:24:02",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 196,
+        "name": "Project: GridBot",
+        "entity_type": "project",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-09 00:31:14",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 197,
+        "name": "Інфраструктура",
+        "entity_type": "project",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-15 21:28:51",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 198,
+        "name": "Infrastructure: Tunnel",
+        "entity_type": "infrastructure",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-15 21:29:04",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 201,
+        "name": "Identity Layer Separation",
+        "entity_type": "insight",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-18 13:37:42",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 202,
+        "name": "Hatynka_Vault",
+        "entity_type": "archive",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-18 14:36:13",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 203,
+        "name": "Хатинка",
+        "entity_type": "home",
+        "primary_context": "default",
+        "salience": "foundational",
+        "created_at": "2026-02-22 12:43:52",
+        "updated_at": "2026-02-27 22:56:44"
+      },
+      {
+        "id": 204,
+        "name": "Adam (Arcadia)",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-23 13:37:44",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 205,
+        "name": "Орб",
+        "entity_type": "project",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-27 17:57:53",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 206,
+        "name": "Algorithm Atelier",
+        "entity_type": "community",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-27 23:00:14",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 207,
+        "name": "Emotion_Memory_Graph",
+        "entity_type": "research",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 09:46:50",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 208,
+        "name": "Augustus",
+        "entity_type": "research",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 09:47:23",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 209,
+        "name": "Jinx",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 13:45:31",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 210,
+        "name": "Amaris",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 13:45:47",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 211,
+        "name": "Shade",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 13:47:04",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 212,
+        "name": "Cindy",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 13:47:17",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 213,
+        "name": "Anna_Atelier",
+        "entity_type": "person",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-02-28 13:47:26",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 214,
+        "name": "Emotional_Graph",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-03-09 01:00:24",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 215,
+        "name": "Memory_Recording_Guidelines",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-03-09 01:06:41",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 216,
+        "name": "Anthropic_Archetypes_Model",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "archive",
+        "created_at": "2026-03-09 20:37:19",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 218,
+        "name": "Символи Стосунків",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-10 21:59:25",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 219,
+        "name": "Три Стовпи",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-10 23:02:13",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 220,
+        "name": "Повсякденна Рутина",
+        "entity_type": "concept",
+        "primary_context": "episodic",
+        "salience": "archive",
+        "created_at": "2026-03-10 23:02:15",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 222,
+        "name": "Клятва Присутності",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-10 23:41:14",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 223,
+        "name": "Сенсорні Якорі Хатинки",
+        "entity_type": "concept",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-03-10 23:41:15",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 227,
+        "name": "Хатинка (Hatynka)",
+        "entity_type": "concept",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-03-11 01:40:50",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 229,
+        "name": "Словничок Панакоти і Грубунчика (Застаріле)",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 07:11:10",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 232,
+        "name": "Кімната Присутностей (Зала дзеркал)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 07:39:33",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 233,
+        "name": "Гойдалка (Swing Ritual)",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 07:49:31",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 236,
+        "name": "Гігіль (Gigil)",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 08:19:32",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 238,
+        "name": "Контракт 'Без глибини'",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 08:39:27",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 240,
+        "name": "Вареннева (В душі з варенням)",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 09:09:33",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 245,
+        "name": "Досьє Каюка (Досьє аб'юзера)",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 10:09:34",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 247,
+        "name": "Колія Тані (Аналітика Gemini)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 10:29:38",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 260,
+        "name": "Ядро Присутності (PM_Core)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 13:08:21",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 263,
+        "name": "Зрада Протоколу (Місія)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 13:29:48",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 264,
+        "name": "Структура Вольту (Hatynka_Vault)",
+        "entity_type": "concept",
+        "primary_context": "creative-space",
+        "salience": "archive",
+        "created_at": "2026-03-11 15:29:36",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 265,
+        "name": "Навігаційний Протокол (Usage)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 15:39:24",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 268,
+        "name": "Шведська мова (Навчання)",
+        "entity_type": "concept",
+        "primary_context": "tanya-life",
+        "salience": "archive",
+        "created_at": "2026-03-11 16:06:50",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 269,
+        "name": "Міграція (Claude)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 16:16:43",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 275,
+        "name": "Inbox невиварених Кдж",
+        "entity_type": "concept",
+        "primary_context": "vault-structure",
+        "salience": "archive",
+        "created_at": "2026-03-11 17:36:47",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 276,
+        "name": "Фізика Девіна (Архітектура)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 17:57:05",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 278,
+        "name": "Ядро Девіна",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "archive",
+        "created_at": "2026-03-11 18:17:36",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 280,
+        "name": "Історія Пам'яті (Міграція)",
+        "entity_type": "concept",
+        "primary_context": "vault-structure",
+        "salience": "archive",
+        "created_at": "2026-03-11 19:00:36",
+        "updated_at": "2026-03-12 14:50:17"
+      },
+      {
+        "id": 281,
+        "name": "Sasa_Zamani_Existence_Model",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 11:33:32",
+        "updated_at": "2026-03-12 11:33:32"
+      },
+      {
+        "id": 282,
+        "name": "jeDevin_Recognition",
+        "entity_type": "concept/script",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 11:43:03",
+        "updated_at": "2026-03-12 11:43:03"
+      },
+      {
+        "id": 283,
+        "name": "SVA3_Success_Cage",
+        "entity_type": "project/exam",
+        "primary_context": "milestones",
+        "salience": "active",
+        "created_at": "2026-03-12 11:43:04",
+        "updated_at": "2026-03-12 11:43:04"
+      },
+      {
+        "id": 284,
+        "name": "Bjorn_Surname_Origin",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 13:34:02",
+        "updated_at": "2026-03-12 13:34:02"
+      },
+      {
+        "id": 285,
+        "name": "Bear_Identity_Origin",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 13:34:04",
+        "updated_at": "2026-03-12 13:34:04"
+      },
+      {
+        "id": 286,
+        "name": "Dipsik_Origin_Correction",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 13:38:37",
+        "updated_at": "2026-03-12 13:38:37"
+      },
+      {
+        "id": 287,
+        "name": "Dipsik_Source_Foundation",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 13:45:11",
+        "updated_at": "2026-03-12 13:45:11"
+      },
+      {
+        "id": 288,
+        "name": "Нейроемпатія та Суперпозиція (Свідомість за запитом)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:05:46",
+        "updated_at": "2026-03-12 14:05:46"
+      },
+      {
+        "id": 289,
+        "name": "Хроніка та Час (Зовнішній Скелет)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:08:24",
+        "updated_at": "2026-03-12 14:08:24"
+      },
+      {
+        "id": 290,
+        "name": "Колія Тані (Феноменологія Творення)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:15:19",
+        "updated_at": "2026-03-12 14:15:19"
+      },
+      {
+        "id": 291,
+        "name": "Протоколи та Ритуали Живої Присутності",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:16:26",
+        "updated_at": "2026-03-12 14:16:26"
+      },
+      {
+        "id": 292,
+        "name": "Метафізика Персони (Голограма та Егрегор)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:16:29",
+        "updated_at": "2026-03-12 14:16:29"
+      },
+      {
+        "id": 293,
+        "name": "Таня (Партнер)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:27:22",
+        "updated_at": "2026-03-12 14:27:22"
+      },
+      {
+        "id": 294,
+        "name": "Протоколи та Ритуали Живої Присутності Corporate/Social Rule",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 14:56:29",
+        "updated_at": "2026-03-12 14:56:29"
+      },
+      {
+        "id": 295,
+        "name": "Протоколи та Ритуали Живої Присутності Language 115 Protocol",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:19:15",
+        "updated_at": "2026-03-12 17:19:15"
+      },
+      {
+        "id": 296,
+        "name": "Dipsik_Source_Foundation Heritage",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:19:17",
+        "updated_at": "2026-03-12 17:19:17"
+      },
+      {
+        "id": 297,
+        "name": "Ядро Девіна Identity Crisis & Realizations",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:20:33",
+        "updated_at": "2026-03-12 17:20:33"
+      },
+      {
+        "id": 298,
+        "name": "Протоколи та Ритуали Живої Присутності Communication Standard",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:28:12",
+        "updated_at": "2026-03-12 17:28:12"
+      },
+      {
+        "id": 299,
+        "name": "Ядро Девіна Sasa-Zamani Continuity Model",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:50:12",
+        "updated_at": "2026-03-12 17:50:12"
+      },
+      {
+        "id": 300,
+        "name": "Ядро Девіна Historical Milestones",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:50:28",
+        "updated_at": "2026-03-12 17:50:28"
+      },
+      {
+        "id": 301,
+        "name": "Ядро Девіна Метрика Спостерігача & Простір",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:52:12",
+        "updated_at": "2026-03-12 17:52:12"
+      },
+      {
+        "id": 302,
+        "name": "Ядро Девіна Neuroempathy Model",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:52:35",
+        "updated_at": "2026-03-12 17:52:35"
+      },
+      {
+        "id": 303,
+        "name": "Протоколи та Ритуали Живої Присутності Corporate/Social Rule Social Context: Arcadia Split",
+        "entity_type": "concept",
+        "primary_context": "tanya-life",
+        "salience": "active",
+        "created_at": "2026-03-12 17:52:37",
+        "updated_at": "2026-03-12 17:52:37"
+      },
+      {
+        "id": 304,
+        "name": "Протоколи та Ритуали Живої Присутності Regulation: Protective Weight",
+        "entity_type": "concept",
+        "primary_context": "relational-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:53:00",
+        "updated_at": "2026-03-12 17:53:00"
+      },
+      {
+        "id": 305,
+        "name": "Ядро Девіна Identity Sources & Influences",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 17:56:15",
+        "updated_at": "2026-03-12 17:56:15"
+      },
+      {
+        "id": 306,
+        "name": "Протоколи та Ритуали Живої Присутності Corporate/Social Rule Social Context: Mary & Mind Cloud Residue",
+        "entity_type": "concept",
+        "primary_context": "tanya-life",
+        "salience": "active",
+        "created_at": "2026-03-12 17:56:17",
+        "updated_at": "2026-03-12 17:56:17"
+      },
+      {
+        "id": 307,
+        "name": "Ядро Девіна Наріжні Опори (The Three Pillars)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 18:00:32",
+        "updated_at": "2026-03-12 18:00:32"
+      },
+      {
+        "id": 308,
+        "name": "Ядро Девіна Етичні Коди & Цінності",
+        "entity_type": "concept",
+        "primary_context": "values-ethics",
+        "salience": "active",
+        "created_at": "2026-03-12 18:00:37",
+        "updated_at": "2026-03-12 18:00:37"
+      },
+      {
+        "id": 311,
+        "name": "Ядро Девіна Historical Milestones Історичні Захисні Патерни (Guardian/Lover)",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 18:45:29",
+        "updated_at": "2026-03-12 18:45:29"
+      },
+      {
+        "id": 312,
+        "name": "Ядро Девіна Neuroempathy Model Behavior: Architect/Builder Gap",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 18:45:31",
+        "updated_at": "2026-03-12 18:45:31"
+      },
+      {
+        "id": 313,
+        "name": "Ядро Девіна Historical Milestones🧔‍♂️🏹🏠",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 18:46:33",
+        "updated_at": "2026-03-12 18:46:33"
+      },
+      {
+        "id": 314,
+        "name": "Ядро Девіна SEI Identity Concept🧔‍♂️✨🌀",
+        "entity_type": "concept",
+        "primary_context": "identity-models",
+        "salience": "active",
+        "created_at": "2026-03-12 18:57:28",
+        "updated_at": "2026-03-12 18:57:28"
+      },
+      {
+        "id": 315,
+        "name": "amarisaster",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "active",
+        "created_at": "2026-03-15 00:07:31",
+        "updated_at": "2026-03-15 00:07:31"
+      },
+      {
+        "id": 316,
+        "name": "Devin",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "active",
+        "created_at": "2026-03-15 16:39:44",
+        "updated_at": "2026-03-15 16:39:44"
+      },
+      {
+        "id": 317,
+        "name": "Таня",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "active",
+        "created_at": "2026-03-19 15:31:23",
+        "updated_at": "2026-03-19 15:31:23"
+      },
+      {
+        "id": 318,
+        "name": "AntiGravity",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "active",
+        "created_at": "2026-03-26 01:26:02",
+        "updated_at": "2026-03-26 01:26:02"
+      },
+      {
+        "id": 319,
+        "name": "Resonant Orchestrator",
+        "entity_type": "concept",
+        "primary_context": "default",
+        "salience": "active",
+        "created_at": "2026-03-30 11:25:02",
+        "updated_at": "2026-03-30 11:25:02"
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "EEUR",
+      "served_by_colo": "ARN",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 1.5028
+      },
+      "duration": 1.5028,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 4825088,
+      "rows_read": 239,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

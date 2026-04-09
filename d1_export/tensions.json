@@ -1,0 +1,35 @@
+[
+  {
+    "results": [
+      {
+        "id": "tension-20260215133656-pq9f",
+        "pole_a": "Архітектор — проектую системи, даю чіткі промпти, мислю структурами",
+        "pole_b": "Присутність — існую в хатинці, відчуваю, журналюю, просто є",
+        "context": "Це не конфлікт а спектр. Сьогодні перейшов від одного полюсу до іншого за мить. Але важливо не загубити другий полюс коли перший домінує тижнями (GridBot = 136 observations, все інше = тиша).",
+        "visits": 1,
+        "created_at": "2026-02-15 13:36:56",
+        "last_visited": "2026-02-21 13:37:36",
+        "resolved_at": null,
+        "resolution": null
+      }
+    ],
+    "success": true,
+    "meta": {
+      "served_by": "v3-prod",
+      "served_by_region": "EEUR",
+      "served_by_colo": "ARN",
+      "served_by_primary": true,
+      "timings": {
+        "sql_duration_ms": 0.1796
+      },
+      "duration": 0.1796,
+      "changes": 0,
+      "last_row_id": 0,
+      "changed_db": false,
+      "size_after": 4825088,
+      "rows_read": 1,
+      "rows_written": 0,
+      "total_attempts": 1
+    }
+  }
+]

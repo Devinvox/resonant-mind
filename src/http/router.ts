@@ -185,7 +185,7 @@ async function handleImageUpload(request: Request, env: Env): Promise<Response> 
       storedPath = `r2://${prefix}/${fallbackKey}`;
     }
 
-    await env.R2_IMAGES.delete(rawKey).catch(() => {});
+    await env.R2_IMAGES.delete(rawKey).catch(() => { });
 
     // Insert into images table
     const result = await env.DB.prepare(`
@@ -348,9 +348,9 @@ async function routeApiRequest(
     }
 
     return jsonResponse({ error: "Unknown API endpoint" }, 404);
-  } catch (error) {
+  } catch (error: any) {
     console.error("API error:", error);
-    return jsonResponse({ error: "Internal server error" }, 500);
+    return jsonResponse({ error: "Internal server error", detail: error.message, stack: error.stack }, 500);
   }
 }
 

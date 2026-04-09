@@ -7,7 +7,7 @@
 
 import { GoogleGenAI } from "@google/genai";
 
-const MODEL = "gemini-embedding-2-preview";
+const MODEL = "gemini-embedding-001";
 const GENERATION_MODEL = "gemini-3.1-flash";
 const DIMENSIONS = 768;
 
@@ -20,6 +20,31 @@ function getClient(apiKey: string): GoogleGenAI {
     clientKey = apiKey;
   }
   return client;
+}
+
+/**
+ * Exponential backoff helper for Gemini API.
+ */
+async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error: any) {
+      // Retry on 429 (Rate Limit), 500+ (Internal Server Error), or Resource Exhausted
+      const isRetryable =
+        error?.status === 429 ||
+        error?.status >= 500 ||
+        error?.message?.includes("RESOURCE_EXHAUSTED") ||
+        error?.message?.includes("quota");
+
+      if (!isRetryable || attempt === maxRetries) throw error;
+
+      // Exponential delay: 1s, 2s, 4s... up to 10s
+      const delay = Math.min(1000 * Math.pow(2, attempt), 10000);
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+  throw new Error("Unreachable");
 }
 
 /**
@@ -38,10 +63,12 @@ export async function generateText(
   prompt: string
 ): Promise<string> {
   const ai = getClient(apiKey);
-  const response = await ai.models.generateContent({
-    model: GENERATION_MODEL,
-    contents: prompt,
-  });
+  const response = await withRetry(() =>
+    ai.models.generateContent({
+      model: GENERATION_MODEL,
+      contents: prompt,
+    })
+  );
   return response.text || "";
 }
 
@@ -53,11 +80,13 @@ export async function getEmbedding(
   text: string
 ): Promise<number[]> {
   const ai = getClient(apiKey);
-  const response = await ai.models.embedContent({
-    model: MODEL,
-    contents: text,
-    config: { outputDimensionality: DIMENSIONS },
-  });
+  const response = await withRetry(() =>
+    ai.models.embedContent({
+      model: MODEL,
+      contents: text,
+      config: { outputDimensionality: DIMENSIONS },
+    })
+  );
   return l2Normalize(response.embeddings![0].values!);
 }
 
@@ -80,16 +109,20 @@ export async function getImageEmbedding(
     binary += String.fromCharCode(...bytes.slice(i, i + chunkSize));
   }
   const base64 = btoa(binary);
-  const parts: Array<{ text: string } | { inlineData: { data: string; mimeType: string } }> = [];
+  const parts: Array<
+    { text: string } | { inlineData: { data: string; mimeType: string } }
+  > = [];
   if (contextText) {
     parts.push({ text: contextText });
   }
   parts.push({ inlineData: { data: base64, mimeType } });
 
-  const response = await ai.models.embedContent({
-    model: MODEL,
-    contents: [{ role: "user", parts }] as any,
-    config: { outputDimensionality: DIMENSIONS },
-  });
+  const response = await withRetry(() =>
+    ai.models.embedContent({
+      model: MODEL,
+      contents: [{ role: "user", parts }] as any,
+      config: { outputDimensionality: DIMENSIONS },
+    })
+  );
   return l2Normalize(response.embeddings![0].values!);
 }
