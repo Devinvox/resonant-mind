@@ -14,7 +14,7 @@ import type {
   MCPToolHandlerMap
 } from "./types";
 
-const RESONANT_MIND_VERSION = "3.1.1";
+const RESONANT_MIND_VERSION = "3.1.2";
 
 // Surface pool configuration
 const SURFACE_POOL_RATIOS = { core: 0.5, novelty: 0.2, dormant: 0.2, edge: 0.1 };
@@ -1976,7 +1976,7 @@ async function getNoveltyPool(env: Env, count: number, includeMetabolized: boole
              COALESCE(o.novelty_score, 1.0) as current_novelty,
              CASE
                WHEN o.last_surfaced_at IS NULL THEN 30
-               ELSE EXTRACT(EPOCH FROM (NOW() - o.last_surfaced_at)) / 86400
+               ELSE (julianday('now') - julianday(o.last_surfaced_at))
              END as days_since_surface
       FROM observations o
       JOIN entities e ON o.entity_id = e.id
@@ -4961,7 +4961,7 @@ async function handleApiOrphans(request: Request, env: Env, pathParts: string[])
     const results = await env.DB.prepare(`
       SELECT oo.*, o.content, o.weight, o.emotion, o.added_at, o.charge,
              e.name as entity_name, e.entity_type,
-             EXTRACT(DAY FROM AGE(NOW(), o.added_at))::INTEGER as days_old
+             CAST((julianday('now') - julianday(o.added_at)) AS INTEGER) as days_old
       FROM orphan_observations oo
       JOIN observations o ON oo.observation_id = o.id
       JOIN entities e ON o.entity_id = e.id
@@ -6689,7 +6689,7 @@ async function processSubconscious(env: Env): Promise<void> {
           + CASE
               WHEN last_surfaced_at IS NOT NULL
               THEN LEAST(${NOVELTY_TIME_RECOVERY_CAP},
-                EXTRACT(EPOCH FROM (NOW() - last_surfaced_at)) / 86400.0 * ${NOVELTY_TIME_RECOVERY_RATE})
+                (julianday('now') - julianday(last_surfaced_at)) * ${NOVELTY_TIME_RECOVERY_RATE})
               ELSE 0
             END
         )

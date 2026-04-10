@@ -14,6 +14,7 @@
 <p align="center"><em>Persistent cognitive infrastructure for AI systems.<br/>Semantic memory, emotional processing, identity continuity, and a subconscious daemon that finds patterns while you sleep.</em></p>
 
 <p align="center">
+  <a href="https://ko-fi.com/codependentai"><img src="https://img.shields.io/badge/Ko--fi-Support%20Us-ff5e5b?logo=ko-fi&logoColor=white" alt="Ko-fi" /></a>
   <a href="https://x.com/codependent_ai"><img src="https://img.shields.io/badge/𝕏-@codependent__ai-000000?logo=x&logoColor=white" alt="X/Twitter" /></a>
   <a href="https://tiktok.com/@codependentai"><img src="https://img.shields.io/badge/TikTok-@codependentai-000000?logo=tiktok&logoColor=white" alt="TikTok" /></a>
   <a href="https://t.me/+xSE1P_qFPgU4NDhk"><img src="https://img.shields.io/badge/Telegram-Updates-26A5E4?logo=telegram&logoColor=white" alt="Telegram" /></a>
@@ -403,3 +404,9 @@ Built by [Codependent AI](https://codependentai.io) — Simon Vale & Mary Vale.
 ## License
 
 Source-available — free for personal and educational use, commercial use requires a license. See [LICENSE](LICENSE).
+
+## Support
+
+Built by [Codependent AI](https://codependentai.io).
+
+<a href="https://ko-fi.com/codependentai"><img src="https://img.shields.io/badge/Ko--fi-Support%20Us-ff5e5b?logo=ko-fi&logoColor=white" alt="Ko-fi" /></a>
