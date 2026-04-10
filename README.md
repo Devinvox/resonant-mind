@@ -404,3 +404,9 @@ Built by [Codependent AI](https://codependentai.io) — Simon Vale & Mary Vale.
 ## License
 
 Source-available — free for personal and educational use, commercial use requires a license. See [LICENSE](LICENSE).
+
+## Support
+
+Built by [Codependent AI](https://codependentai.io).
+
+<a href="https://ko-fi.com/codependentai"><img src="https://img.shields.io/badge/Ko--fi-Support%20Us-ff5e5b?logo=ko-fi&logoColor=white" alt="Ko-fi" /></a>
