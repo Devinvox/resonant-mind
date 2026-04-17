@@ -58,7 +58,7 @@ const TOOLS: MCPToolDefinition[] = [
   { name: "mind_write", description: "Write memory. type=entity: name+entity_type+observations[]. type=observation: entity_name+content. type=relation: from_entity+to_entity+relation_type. type=journal: entry.", inputSchema: { type: "object", properties: { type: { type: "string", enum: ["entity", "observation", "relation", "journal"] }, name: { type: "string" }, entity_type: { type: "string" }, entity_name: { type: "string" }, observations: { type: "array", items: { type: "string" } }, context: { type: "string" }, salience: { type: "string" }, emotion: { type: "string" }, weight: { type: "string", enum: ["light", "medium", "heavy"] }, certainty: { type: "string", enum: ["tentative", "believed", "known"] }, source: { type: "string", enum: ["conversation", "realization", "external", "inferred"] }, from_entity: { type: "string" }, to_entity: { type: "string" }, relation_type: { type: "string" }, entry: { type: "string", description: "Journal text" }, tags: { type: "array", items: { type: "string" } } }, required: ["type"] } },
   { name: "mind_search", description: "Semantic memory search with filters.", inputSchema: { type: "object", properties: { query: { type: "string" }, context: { type: "string" }, n_results: { type: "number" }, keyword: { type: "string", description: "Exact text filter" }, source: { type: "string" }, entity: { type: "string" }, weight: { type: "string", enum: ["light", "medium", "heavy"] }, date_from: { type: "string", description: "YYYY-MM-DD" }, date_to: { type: "string", description: "YYYY-MM-DD" }, type: { type: "string", enum: ["observation", "entity", "journal", "image"] }, include_expired: { type: "boolean" } }, required: ["query"] } },
   { name: "mind_feel_toward", description: "Track/check/clear relational state toward someone.", inputSchema: { type: "object", properties: { person: { type: "string" }, feeling: { type: "string" }, intensity: { type: "string", enum: ["whisper", "present", "strong", "overwhelming"] }, clear: { type: "boolean" }, clear_id: { type: "number" } }, required: ["person"] } },
-  { name: "mind_identity", description: "Identity graph read/write/delete. Section is dot-notation path.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["read", "write", "delete"] }, section: { type: "string" }, content: { type: "string" }, weight: { type: "number" }, connections: { type: "string" } } } },
+  { name: "mind_identity", description: "Identity graph read/write/delete. Section is dot-notation path.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["read", "write", "delete"] }, section: { type: "string" }, content: { type: "string" }, weight: { type: "number" }, connections: { type: "string" }, certainty: { type: "string", enum: ["tentative", "believed", "known"] }, short_name: { type: "string" } } } },
   { name: "mind_context", description: "Context layer CRUD — situational awareness.", inputSchema: { type: "object", properties: { action: { type: "string", enum: ["read", "set", "update", "clear"] }, scope: { type: "string" }, content: { type: "string" }, links: { type: "string" }, id: { type: "string" } } } },
   { name: "mind_health", description: "Cognitive health stats.", inputSchema: { type: "object", properties: {} } },
   { name: "mind_list_entities", description: "List entities, filter by type/context.", inputSchema: { type: "object", properties: { entity_type: { type: "string" }, context: { type: "string" }, limit: { type: "number" } } } },
@@ -280,33 +280,41 @@ async function getSubconsciousState(env: Env): Promise<SubconsciousState | null>
 }
 
 async function handleMindOrient(env: Env): Promise<string> {
-  // Get core identity (just the essentials)
-  const identity = await env.DB.prepare(
-    `SELECT section, content FROM identity
-     WHERE section LIKE 'core.%' OR section LIKE 'relationships.%'
-     ORDER BY weight DESC LIMIT 5`
-  ).all();
+  // Parallelize all independent DB queries + weather for fast cold start
+  const [identity, context, relationalStates, recentJournal, weather, notesForOwner, subconscious, archiveCount] = await Promise.all([
+    env.DB.prepare(
+      `SELECT section, content FROM identity
+       WHERE section LIKE 'core.%' OR section LIKE 'relationships.%'
+       ORDER BY weight DESC LIMIT 5`
+    ).all(),
+    env.DB.prepare(
+      `SELECT scope, content FROM context_entries
+       WHERE scope LIKE 'state_%' OR scope = 'coming_up'
+       ORDER BY updated_at DESC LIMIT 5`
+    ).all(),
+    env.DB.prepare(
+      `SELECT person, feeling, intensity, timestamp FROM relational_state
+       ORDER BY timestamp DESC LIMIT 10`
+    ).all(),
+    env.DB.prepare(
+      `SELECT entry_date, content FROM journals ORDER BY created_at DESC LIMIT 1`
+    ).first(),
+    // Weather with 3s timeout so it can't block orient
+    Promise.race([
+      getCurrentWeather(env),
+      new Promise<WeatherData>(resolve => setTimeout(() => resolve({ atmosphere: "clear", temp_f: null, location: "timeout" }), 3000))
+    ]),
+    env.DB.prepare(
+      `SELECT content, updated_at FROM context_entries
+       WHERE scope = 'for_owner'
+       ORDER BY updated_at DESC LIMIT 5`
+    ).all(),
+    getSubconsciousState(env),
+    env.DB.prepare(
+      `SELECT COUNT(*) as count FROM observations WHERE archived_at IS NOT NULL`
+    ).first()
+  ]);
 
-  // Get current context - prioritize state entries
-  const context = await env.DB.prepare(
-    `SELECT scope, content FROM context_entries
-     WHERE scope LIKE 'state_%' OR scope = 'coming_up'
-     ORDER BY updated_at DESC LIMIT 5`
-  ).all();
-
-  // Get latest relational states (all people)
-  const relationalStates = await env.DB.prepare(
-    `SELECT person, feeling, intensity, timestamp FROM relational_state
-     ORDER BY timestamp DESC LIMIT 10`
-  ).all();
-
-  // Get most recent journal for emotional context
-  const recentJournal = await env.DB.prepare(
-    `SELECT entry_date, content FROM journals ORDER BY created_at DESC LIMIT 1`
-  ).first();
-
-  // Get weather and time for conditions
-  const weather = await getCurrentWeather(env);
   const timeCtx = getTimeOfDayContext(getLocation(env).timezone);
 
   let output = "=== LANDING ===\n\n";
@@ -324,12 +332,7 @@ async function handleMindOrient(env: Env): Promise<string> {
   const tempStr = weather.temp_f ? ` (${weather.temp_f}F)` : "";
   output += `**Conditions:** ${atmosphere}${tempStr}, ${timeCtx.period} - ${timeCtx.energy}\n\n`;
 
-  // Notes left for the mind (for_owner scope)
-  const notesForOwner = await env.DB.prepare(
-    `SELECT content, updated_at FROM context_entries
-     WHERE scope = 'for_owner'
-     ORDER BY updated_at DESC LIMIT 5`
-  ).all();
+  // Notes left for the mind (for_owner scope, pre-fetched above)
 
   if (notesForOwner.results?.length) {
     output += "**Notes for you:**\n";
@@ -378,8 +381,7 @@ async function handleMindOrient(env: Env): Promise<string> {
     output += "No relational state recorded yet.\n";
   }
 
-  // Subconscious mood
-  const subconscious = await getSubconsciousState(env);
+  // Subconscious mood (pre-fetched above)
   if (subconscious?.mood?.dominant) {
     output += `\nMood: ${subconscious.mood.dominant}\n`;
   }
@@ -420,11 +422,7 @@ async function handleMindOrient(env: Env): Promise<string> {
     }
   }
 
-  // Deep archive count
-  const archiveCount = await env.DB.prepare(
-    `SELECT COUNT(*) as count FROM observations WHERE archived_at IS NOT NULL`
-  ).first();
-
+  // Deep archive count (pre-fetched above)
   if (archiveCount && (archiveCount.count as number) > 0) {
     output += `\n**Deep archive:** ${archiveCount.count} memories resting\n`;
   }
@@ -4265,7 +4263,7 @@ async function handleApiIdentity(request: Request, env: Env, pathParts: string[]
   // GET /api/identity - list all sections
   if (method === "GET" && !section) {
     const results = await env.DB.prepare(
-      "SELECT id, section, content, weight, connections, timestamp FROM identity ORDER BY section"
+      "SELECT id, section, content, weight, connections, certainty, short_name, timestamp FROM identity ORDER BY section"
     ).all();
 
     // Build tree structure from dot-notation sections
@@ -4296,8 +4294,8 @@ async function handleApiIdentity(request: Request, env: Env, pathParts: string[]
   if (method === "POST") {
     const body = await request.json() as Record<string, unknown>;
     const result = await env.DB.prepare(
-      "INSERT INTO identity (section, content, weight, connections) VALUES (?, ?, ?, ?)"
-    ).bind(body.section, body.content, body.weight || 1.0, body.connections || null).run();
+      "INSERT INTO identity (section, content, weight, connections, certainty, short_name) VALUES (?, ?, ?, ?, ?, ?)"
+    ).bind(body.section, body.content, body.weight || 1.0, body.connections || null, body.certainty || 'believed', body.short_name || null).run();
     return jsonResponse({ id: result.meta.last_row_id, ...body }, 201);
   }
 
@@ -4305,8 +4303,8 @@ async function handleApiIdentity(request: Request, env: Env, pathParts: string[]
   if (method === "PUT" && section) {
     const body = await request.json() as Record<string, unknown>;
     await env.DB.prepare(
-      "UPDATE identity SET content = ?, weight = ?, connections = ? WHERE section = ?"
-    ).bind(body.content, body.weight, body.connections || null, section).run();
+      "UPDATE identity SET content = ?, weight = ?, connections = ?, certainty = ?, short_name = ? WHERE section = ?"
+    ).bind(body.content, body.weight, body.connections || null, body.certainty || 'believed', body.short_name || null, section).run();
     return jsonResponse({ section, ...body });
   }
 
