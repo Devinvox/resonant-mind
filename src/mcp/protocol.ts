@@ -54,8 +54,14 @@ export async function handleMcpProtocolRequest(
         const toolParams =
           (params as { arguments?: Record<string, unknown> }).arguments ?? {};
 
+        const toolResult = await toolHandler(env, toolParams);
+        // Sanitize lone surrogates that crash UTF-8 encoders downstream
+        const safeText = typeof toolResult === 'string'
+          ? toolResult.replace(/[\ud800-\udfff]/g, '\ufffd')
+          : toolResult;
+
         result = {
-          content: [{ type: "text", text: await toolHandler(env, toolParams) }]
+          content: [{ type: "text", text: safeText }]
         };
         break;
       }
@@ -70,10 +76,12 @@ export async function handleMcpProtocolRequest(
     });
   } catch (error) {
     console.error("MCP tool error:", error);
+    const errMsg = error instanceof Error ? error.message : String(error);
+    const safeErr = errMsg.replace(/[\ud800-\udfff]/g, '\ufffd');
     const response: MCPResponse = {
       jsonrpc: "2.0",
       id,
-      error: { code: -32603, message: "Internal tool error" }
+      error: { code: -32603, message: `Internal tool error: ${errMsg}` }
     };
     return new Response(JSON.stringify(response), {
       headers: { "Content-Type": "application/json" }
